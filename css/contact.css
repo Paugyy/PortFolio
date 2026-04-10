@@ -1,0 +1,101 @@
+/* ================================================================
+   CONTACT.CSS
+   MODIFIER : Mise en page du formulaire et infos contact
+   ================================================================ */
+
+/* Grille 2 colonnes */
+.contact-grid {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 640px) {
+  .contact-grid { grid-template-columns: 1.4fr 1fr; }
+}
+
+/* Formulaire */
+/* MODIFIER : Couleurs des champs de formulaire */
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+
+.form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.form-group label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-sub);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 0.65rem 0.875rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-family: var(--font);
+  outline: none;
+  transition: var(--t);
+  resize: vertical;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder { color: var(--text-dim); }
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: var(--accent-border);
+  box-shadow: 0 0 0 3px rgba(200,169,110,0.08);
+}
+
+/* Infos contact */
+/* MODIFIER : Style des lignes de coordonnées */
+.contact-info {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  padding: 0;
+}
+
+.contact-info li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.ci-icon {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--r-sm);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.ci-label {
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin-bottom: 0.15rem;
+}
+
+.ci-value {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: var(--t);
+}
+
+a.ci-value:hover { color: var(--accent); }

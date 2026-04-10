@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Paugy Yannis — Portfolio BTS SIO</title>
+  <meta name="description" content="Portfolio BTS SIO SISR — Paugy Yannis, étudiant en systèmes et réseaux à Caen." />
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/index.css" />
+  <!-- MODIFIER : Ajouter un favicon ici -->
+  <!-- <link rel="icon" href="img/favicon.ico"> -->
+</head>
+<body>
+
+<!-- ================================================================
+     HEADER — Navigation principale
+     MODIFIER : Les liens de navigation si vous changez les noms de pages
+     ================================================================ -->
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="index.html" aria-label="Accueil">
+      <span class="brand__mark">PY</span>
+      <span class="brand__text">Paugy Yannis</span>
+    </a>
+    <nav class="nav" id="mainNav" aria-label="Navigation principale">
+      <a href="index.html" aria-current="page">Accueil</a>
+      <a href="pages/profil.html">Profil</a>
+      <a href="pages/ressources.html">Ressources</a>
+      <a href="pages/projets.html">Projets</a>
+      <a href="pages/contact.html">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ================================================================
+     CONTENU PRINCIPAL
+     ================================================================ -->
+<div class="page-wrap">
+<main class="container">
+
+  <!-- ── HERO ──────────────────────────────────────────────────── -->
+  <!-- MODIFIER : Votre présentation personnelle dans cette section -->
+  <section style="padding-block: 3rem 2rem;">
+    <p class="pill">BTS SIO • Option SISR</p>
+    <h1 class="page-title">Portfolio <span>professionnel</span></h1>
+    <!-- MODIFIER : Votre texte de présentation (2-3 lignes max) -->
+    <p class="page-lead">
+      Étudiant en BTS SIO SISR, passionné par les systèmes, réseaux
+      et l'administration infrastructure. En recherche d'alternance.
+    </p>
+
+    <!-- Logos entreprise/école -->
+    <!-- MODIFIER : Remplacer les images par vos logos (même dossier img/) -->
+    <div style="display:flex;align-items:center;gap:1rem;margin-block:1.5rem;flex-wrap:wrap;">
+      <img src="img/logo-mds-hd.png"       alt="MyDigitalSchool"    style="height:clamp(1.5rem,3vw,2.25rem);width:auto;object-fit:contain;">
+      <img src="img/logo-santebtp-hd.png"  alt="Santé BTP Normandie" style="height:clamp(1.5rem,3vw,2.25rem);width:auto;object-fit:contain;">
+    </div>
+
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:0.5rem;">
+      <a class="btn btn--primary" href="pages/projets.html">Voir mes projets</a>
+      <a class="btn btn--ghost"   href="pages/contact.html">Me contacter</a>
+    </div>
+
+    <!-- Méta-infos -->
+    <!-- MODIFIER : Votre localisation, compétences clés, lien GitHub -->
+    <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.5rem;">
+      <span style="padding:.3rem .75rem;border:1px solid var(--border);border-radius:999px;font-size:.78rem;color:var(--text-sub)">📍 Caen</span>
+      <span style="padding:.3rem .75rem;border:1px solid var(--border);border-radius:999px;font-size:.78rem;color:var(--text-sub)">🛠 Linux · Docker · Windows</span>
+      <a href="https://github.com/Paugyy" target="_blank" rel="noopener"
+         style="padding:.3rem .75rem;border:1px solid var(--border);border-radius:999px;font-size:.78rem;color:var(--text-sub);transition:var(--t)"
+         onmouseover="this.style.borderColor='var(--border-hover)'"
+         onmouseout="this.style.borderColor='var(--border)'">🔗 GitHub : Paugyy</a>
+    </div>
+  </section>
+
+  <!-- ── BTS SIO ──────────────────────────────────────────────── -->
+  <!-- MODIFIER : Contenu de la section BTS SIO -->
+  <section class="card" style="margin-bottom:2rem;">
+    <h2 class="section-title">BTS SIO</h2>
+    <p class="muted">
+      Je suis en option <strong style="color:var(--text)">SISR</strong> (Solutions d'Infrastructure,
+      Systèmes et Réseaux). Cette option forme à l'administration des parcs
+      informatiques, la virtualisation, la cybersécurité et la gestion des réseaux.
+    </p>
+  </section>
+
+  <!-- ── PROJETS À LA UNE ─────────────────────────────────────── -->
+  <section style="margin-bottom:3rem;">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;">
+      <h2 class="section-title" style="margin-bottom:0">Projets à la une</h2>
+      <a class="btn btn--ghost btn--sm" href="pages/projets.html">Voir tout →</a>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel__track" id="featuredTrack">
+        <!-- Rempli automatiquement par js/projects.js -->
+        <!-- MODIFIER : Les données dans data/projects.json -->
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================================================================
+     FOOTER — Modifier : droits d'auteur, liens
+     ================================================================ -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>© <span id="year"></span> Paugy Yannis</span>
+    <span>BTS SIO · GitHub Pages</span>
+  </div>
+</footer>
+</div>
+
+<!-- Scripts -->
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="js/projects.js"></script>
+<script src="js/shared.js"></script>
+</body>
+</html>

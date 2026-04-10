@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projets — Paugy Yannis</title>
+  <meta name="description" content="Projets BTS SIO : entreprise, école, perso." />
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="../css/projets.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="../index.html">
+      <span class="brand__mark">PY</span>
+      <span class="brand__text">Paugy Yannis</span>
+    </a>
+    <nav class="nav" id="mainNav" aria-label="Navigation principale">
+      <a href="../index.html">Accueil</a>
+      <a href="profil.html">Profil</a>
+      <a href="ressources.html">Ressources</a>
+      <a href="projets.html" aria-current="page">Projets</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="page-wrap">
+<main class="container">
+
+  <div style="padding-block:2.5rem 1.5rem;">
+    <p class="pill">BTS SIO · Projets</p>
+    <!-- MODIFIER : Titre de page -->
+    <h1 class="page-title">Mes <span>projets</span></h1>
+    <p class="page-lead">Tous mes projets réalisés durant mon BTS SIO 2025–2027.</p>
+  </div>
+
+  <!-- Filtres catégories -->
+  <!-- MODIFIER : Ajouter une catégorie → ajouter un bouton + mettre la même valeur dans data-filter et dans le JSON -->
+  <div class="proj-filters" id="projFilters">
+    <button class="proj-filter active" data-filter="all">Tous</button>
+    <button class="proj-filter" data-filter="entreprise">Entreprise</button>
+    <button class="proj-filter" data-filter="ecole">École</button>
+    <button class="proj-filter" data-filter="perso">Perso</button>
+  </div>
+
+  <!-- Grille de projets (remplie par projects.js) -->
+  <!-- MODIFIER : Les données dans data/projects.json -->
+  <div class="proj-grid" id="projectsGrid"></div>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>© <span id="year"></span> Paugy Yannis</span>
+    <span>BTS SIO · GitHub Pages</span>
+  </div>
+</footer>
+</div>
+
+<!-- ── OVERLAY POPUP PROJET ── -->
+<div class="overlay" id="overlay"></div>
+
+<!-- ── POPUP PROJET ── Grande popup centrée -->
+<div class="popup-project" id="popupProject" role="dialog" aria-modal="true" aria-label="Détail du projet">
+  <div class="popup-project__box">
+    <div class="popup__header">
+      <div class="popup__header-left">
+        <div class="popup__meta" id="ppMeta"><!-- tag catégorie inséré ici --></div>
+        <h2 class="popup__title" id="ppTitle"></h2>
+        <span class="popup__stack" id="ppStack"></span>
+      </div>
+      <button class="popup__close" id="ppClose" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="popup__body" id="ppBody">
+      <!-- Injecté par projects.js -->
+    </div>
+  </div>
+</div>
+
+<!-- ── OVERLAY POPUP PROCÉDURE ── -->
+<div class="overlay-proc" id="overlayProc"></div>
+
+<!-- ── POPUP PROCÉDURE ── Plus petite, par-dessus la popup projet -->
+<div class="popup-proc" id="popupProc" role="dialog" aria-modal="true" aria-label="Procédure">
+  <div class="popup-proc__box">
+    <div class="popup-proc__header">
+      <h3 class="popup-proc__title" id="procTitle"></h3>
+      <button class="popup__close" id="procClose" aria-label="Fermer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="popup-proc__body" id="procBody"></div>
+  </div>
+</div>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="../js/projects.js"></script>
+<script src="../js/shared.js"></script>
+</body>
+</html>

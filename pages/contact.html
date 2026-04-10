@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — Paugy Yannis</title>
+  <meta name="description" content="Contacter Paugy Yannis via le formulaire ou par email." />
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="../css/contact.css" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="../index.html">
+      <span class="brand__mark">PY</span>
+      <span class="brand__text">Paugy Yannis</span>
+    </a>
+    <nav class="nav" id="mainNav" aria-label="Navigation principale">
+      <a href="../index.html">Accueil</a>
+      <a href="profil.html">Profil</a>
+      <a href="ressources.html">Ressources</a>
+      <a href="projets.html">Projets</a>
+      <a href="contact.html" aria-current="page">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="page-wrap">
+<main class="container">
+
+  <div style="padding-block:2.5rem 2rem;">
+    <p class="pill">BTS SIO · Contact</p>
+    <h1 class="page-title">Me <span>contacter</span></h1>
+    <p class="page-lead">Disponible pour toute opportunité de stage ou d'alternance.</p>
+  </div>
+
+  <div class="contact-grid">
+
+    <!-- Formulaire -->
+    <!-- MODIFIER : action="URL_FORMSPREE" — créer un compte sur formspree.io -->
+    <article class="card">
+      <h2 class="section-title">Formulaire</h2>
+      <form class="contact-form"
+            action="https://formspree.io/f/xaqpqdnk"
+            method="POST">
+
+        <!-- MODIFIER : Les champs selon vos besoins -->
+        <div class="form-group">
+          <label for="name">Nom</label>
+          <input id="name" name="name" type="text" placeholder="Votre nom" required />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="votre@email.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="subject">Sujet</label>
+          <input id="subject" name="subject" type="text" placeholder="Objet du message" required />
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="6" placeholder="Votre message..." required></textarea>
+        </div>
+
+        <input type="hidden" name="_subject" value="Nouveau message — Portfolio BTS SIO" />
+        <input type="hidden" name="_captcha" value="false" />
+
+        <button type="submit" class="btn btn--primary">Envoyer le message</button>
+      </form>
+    </article>
+
+    <!-- Infos contact -->
+    <!-- MODIFIER : Vos coordonnées -->
+    <aside>
+      <article class="card" style="margin-bottom:1rem;">
+        <h2 class="section-title">Coordonnées</h2>
+        <ul class="contact-info">
+          <li>
+            <span class="ci-icon">✉</span>
+            <div>
+              <div class="ci-label">Email</div>
+              <!-- MODIFIER : Votre email -->
+              <a href="mailto:paugyyannis@gmail.com" class="ci-value">paugyyannis@gmail.com</a>
+            </div>
+          </li>
+          <li>
+            <span class="ci-icon">⌥</span>
+            <div>
+              <div class="ci-label">GitHub</div>
+              <a href="https://github.com/Paugyy" target="_blank" rel="noopener" class="ci-value">github.com/Paugyy</a>
+            </div>
+          </li>
+          <li>
+            <span class="ci-icon">📍</span>
+            <div>
+              <div class="ci-label">Localisation</div>
+              <!-- MODIFIER : Votre ville -->
+              <span class="ci-value">Caen, Normandie</span>
+            </div>
+          </li>
+          <li>
+            <span class="ci-icon">🟢</span>
+            <div>
+              <div class="ci-label">Disponibilité</div>
+              <!-- MODIFIER : Votre disponibilité -->
+              <span class="ci-value">À préciser</span>
+            </div>
+          </li>
+        </ul>
+      </article>
+
+      <article class="card" style="background:var(--accent-bg);border-color:var(--accent-border);">
+        <p style="font-size:.85rem;color:var(--text-sub);line-height:1.6;">
+          💡 Pour toute demande urgente, préférez le contact par email direct.
+          Le formulaire est traité sous 48h.
+        </p>
+      </article>
+    </aside>
+
+  </div>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>© <span id="year"></span> Paugy Yannis</span>
+    <span>BTS SIO · GitHub Pages</span>
+  </div>
+</footer>
+</div>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="../js/shared.js"></script>
+</body>
+</html>

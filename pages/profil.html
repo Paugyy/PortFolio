@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Profil — Paugy Yannis</title>
+  <meta name="description" content="Profil, parcours et objectifs de Paugy Yannis, étudiant BTS SIO SISR." />
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="../css/profil.css" />
+</head>
+<body>
+
+<!-- HEADER — identique sur toutes les pages. MODIFIER : aria-current sur la bonne page -->
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="../index.html">
+      <span class="brand__mark">PY</span>
+      <span class="brand__text">Paugy Yannis</span>
+    </a>
+    <nav class="nav" id="mainNav" aria-label="Navigation principale">
+      <a href="../index.html">Accueil</a>
+      <a href="profil.html" aria-current="page">Profil</a>
+      <a href="ressources.html">Ressources</a>
+      <a href="projets.html">Projets</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="mainNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="page-wrap">
+<main class="container">
+
+  <!-- ── EN-TÊTE PAGE ── -->
+  <div style="padding-block:2.5rem 2rem;">
+    <p class="pill">BTS SIO · Profil</p>
+    <!-- MODIFIER : Votre titre de page -->
+    <h1 class="page-title">Mon <span>profil</span></h1>
+    <p class="page-lead">Étudiant passionné par les systèmes, réseaux et l'administration infrastructure.</p>
+  </div>
+
+  <!-- ── GRILLE PROFIL ── -->
+  <div class="profil-grid">
+
+    <!-- Présentation -->
+    <!-- MODIFIER : Votre texte de présentation -->
+    <article class="card">
+      <h2 class="section-title">Présentation</h2>
+      <p class="muted" style="margin-bottom:.75rem;">
+        Je suis actuellement étudiant en BTS SIO option SISR. Je développe
+        progressivement mes compétences en systèmes, réseaux, virtualisation
+        et hébergement web.
+      </p>
+      <p class="muted">
+        À travers mes projets, j'apprends à concevoir, organiser et déployer
+        des solutions techniques de manière structurée et professionnelle.
+      </p>
+    </article>
+
+    <!-- Objectifs -->
+    <!-- MODIFIER : Vos objectifs professionnels -->
+    <article class="card">
+      <h2 class="section-title">Objectifs</h2>
+      <ul class="muted" style="padding-left:1.25rem;display:grid;gap:.4rem;">
+        <li>Renforcer mes compétences en administration système et réseau</li>
+        <li>Acquérir de l'expérience via des projets concrets</li>
+        <li>Développer un portfolio propre et professionnel</li>
+        <li>Poursuivre dans un environnement technique stimulant</li>
+      </ul>
+    </article>
+  </div>
+
+  <!-- ── PARCOURS ── -->
+  <!-- MODIFIER : Votre parcours (ajouter/supprimer des items timeline__item) -->
+  <section class="card" style="margin-top:1rem;">
+    <h2 class="section-title">Parcours</h2>
+    <div class="timeline">
+
+      <div class="timeline__item">
+        <span class="timeline__date">2025 – 2027</span>
+        <div class="timeline__content">
+          <h3>BTS SIO — Option SISR</h3>
+          <!-- MODIFIER : Nom de votre école -->
+          <p class="muted">MyDigitalSchool Caen · Formation systèmes, réseaux et infrastructure.</p>
+        </div>
+      </div>
+
+      <!-- MODIFIER : Ajouter votre expérience stage/alternance -->
+      <div class="timeline__item">
+        <span class="timeline__date">2025</span>
+        <div class="timeline__content">
+          <h3>Stage — Santé BTP Normandie</h3>
+          <p class="muted">À compléter : missions réalisées, technologies utilisées.</p>
+        </div>
+      </div>
+
+      <!-- MODIFIER : Votre parcours avant le BTS -->
+      <div class="timeline__item">
+        <span class="timeline__date">Avant</span>
+        <div class="timeline__content">
+          <h3>À compléter</h3>
+          <p class="muted">Bac, expériences précédentes, orientation...</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── QUALITÉS ── -->
+  <!-- MODIFIER : Vos soft-skills -->
+  <section class="card" style="margin-top:1rem;margin-bottom:3rem;">
+    <h2 class="section-title">Qualités</h2>
+    <div class="softskills">
+      <span>Rigueur</span>
+      <span>Autonomie</span>
+      <span>Organisation</span>
+      <span>Curiosité</span>
+      <span>Persévérance</span>
+      <span>Esprit d'équipe</span>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER — identique sur toutes les pages -->
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>© <span id="year"></span> Paugy Yannis</span>
+    <span>BTS SIO · GitHub Pages</span>
+  </div>
+</footer>
+</div>
+
+<script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+<script src="../js/shared.js"></script>
+</body>
+</html>
