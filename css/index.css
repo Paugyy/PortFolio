@@ -13,21 +13,21 @@
    ================================================================ */
 :root {
   /* Couleurs de fond */
-  --bg:       #0A0C0F;   /* Fond principal (très sombre) */
-  --bg-card:  #111318;   /* Fond des cartes */
-  --bg-card2: #0D0F13;   /* Fond des cartes secondaires */
-  --bg-glass: rgba(17, 19, 24, 0.85); /* Fond vitré */
+  --bg:       #12161E;   /* Fond principal */
+  --bg-card:  #1C2230;   /* Fond des cartes */
+  --bg-card2: #161D2A;   /* Fond des cartes secondaires */
+  --bg-glass: rgba(28, 34, 48, 0.90); /* Fond vitré */
 
   /* Couleurs texte */
-  --text:     #F0F2F5;   /* Texte principal */
-  --text-sub: #8A92A3;   /* Texte secondaire/muted */
-  --text-dim: #4A5568;   /* Texte très discret */
+  --text:     #F4F6FA;   /* Texte principal */
+  --text-sub: #A8B4CC;   /* Texte secondaire/muted */
+  --text-dim: #6A7A9A;   /* Texte très discret */
 
   /* Accent — couleur signature du portfolio */
-  --accent:   #C8A96E;   /* Or chaud — MODIFIER pour changer l'accent */
-  --accent2:  #A8854A;   /* Or foncé */
-  --accent-bg: rgba(200, 169, 110, 0.08);
-  --accent-border: rgba(200, 169, 110, 0.22);
+  --accent:   #E8C47A;   /* Or vif */
+  --accent2:  #C89A44;   /* Or foncé */
+  --accent-bg: rgba(232, 196, 122, 0.12);
+  --accent-border: rgba(232, 196, 122, 0.30);
 
   /* Bordures */
   --border:   rgba(255,255,255,0.07);
@@ -72,9 +72,9 @@ body {
   color: var(--text);
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 80% 50% at 15% 0%, rgba(200,169,110,0.07) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 85% 5%, rgba(100,140,255,0.06) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 60% at 50% 100%, rgba(0,0,0,0.3) 0%, transparent 70%);
+    radial-gradient(ellipse 80% 50% at 15% 0%, rgba(232,196,122,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85% 5%, rgba(100,140,255,0.10) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 60% at 50% 100%, rgba(0,0,0,0.15) 0%, transparent 70%);
   background-attachment: fixed;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -847,17 +847,15 @@ main { flex: 1; padding-block: 2.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }
 
-/* ================================================================
-   CHATBOT — Widget flottant persistant
-   RÈGLE CRITIQUE : aucun style ici ne doit bloquer overflow, 
-   pointer-events ou position du body/html.
-   ================================================================ */
 
+/* ================================================================
+   CHATBOT — Widget flottant
+   ================================================================ */
 .cb-btn {
   position: fixed;
   bottom: 1.75rem;
   right: 1.75rem;
-  z-index: 500; /* au-dessus de tout sauf popups */
+  z-index: 500;
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
@@ -870,31 +868,25 @@ main { flex: 1; padding-block: 2.5rem; }
   justify-content: center;
   box-shadow: 0 4px 28px rgba(200,169,110,0.45), 0 2px 8px rgba(0,0,0,0.5);
   transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s;
-  flex-shrink: 0;
 }
 .cb-btn:hover { transform: scale(1.12); box-shadow: 0 6px 36px rgba(200,169,110,0.6); }
 .cb-btn svg { width: 1.4rem; height: 1.4rem; pointer-events: none; }
 
 .cb-badge {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 1.35rem;
-  height: 1.35rem;
+  top: -4px; right: -4px;
+  width: 1.35rem; height: 1.35rem;
   border-radius: 50%;
-  font-size: 0.65rem;
-  font-weight: 800;
+  font-size: 0.65rem; font-weight: 800;
   color: #fff;
-  align-items: center;
-  justify-content: center;
+  align-items: center; justify-content: center;
   border: 2px solid var(--bg);
   font-family: var(--font-mono);
 }
 
 .cb-panel {
   position: fixed;
-  bottom: 6.5rem;
-  right: 1.75rem;
+  bottom: 6.5rem; right: 1.75rem;
   z-index: 500;
   width: clamp(17rem, 88vw, 22rem);
   background: var(--bg-card2);
@@ -902,17 +894,14 @@ main { flex: 1; padding-block: 2.5rem; }
   border-radius: var(--r-xl);
   box-shadow: var(--shadow-lg);
   overflow: hidden;
-  opacity: 0;
-  visibility: hidden;
+  opacity: 0; visibility: hidden;
   transform: translateY(16px) scale(0.95);
   transition: opacity 0.25s, visibility 0.25s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
 }
 .cb-panel.is-open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
 
 .cb-head {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  display: flex; align-items: center; gap: 0.5rem;
   padding: 0.875rem 1.1rem;
   border-bottom: 1px solid var(--border);
   background: linear-gradient(135deg, rgba(200,169,110,0.06), transparent);
@@ -922,32 +911,24 @@ main { flex: 1; padding-block: 2.5rem; }
 .cb-sub { font-size: 0.7rem; color: var(--text-sub); margin-left: auto; font-family: var(--font-mono); }
 
 .cb-body { padding: 1rem 1.1rem 1.1rem; display: flex; flex-direction: column; gap: 0.75rem; }
-.cb-msg { font-size: 0.85rem; color: var(--text); line-height: 1.5; text-align: center; }
+.cb-msg  { font-size: 0.85rem; color: var(--text); line-height: 1.5; text-align: center; }
 
-/* Grille 11 boutons en une ligne */
 .cb-scale {
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   gap: 3px;
 }
-
 .cb-nb {
   aspect-ratio: 1;
   border-radius: 0.35rem;
   border: 1px solid transparent;
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: 0.68rem; font-weight: 700;
   cursor: pointer;
   transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s;
   font-family: var(--font);
   line-height: 1;
 }
-.cb-nb:hover {
-  transform: scale(1.28) translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-  z-index: 1;
-  position: relative;
-}
+.cb-nb:hover { transform: scale(1.28) translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.5); z-index: 1; position: relative; }
 
 /* Dégradé rouge → vert */
 .cb-nb[data-v="0"]  { background:#3D0000; color:#FF5555; border-color:#5A0000; }
@@ -968,158 +949,40 @@ main { flex: 1; padding-block: 2.5rem; }
 .cb-resp.negative { color: #FF7070; }
 
 /* ================================================================
-   DATA BLAST — Panneau gauche fixe (note 0)
+   CHAOS LAYER — note 0
+   Superposition non-cliquable au-dessus de tout sauf du bouton
+   Les éléments défilent comme le logo DVD
    ================================================================ */
-.data-blast {
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: clamp(17rem, 30vw, 26rem);
-  z-index: 9500;
-  background: rgba(8,0,0,0.97);
-  border-right: 2px solid rgba(255,0,0,0.5);
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  box-shadow: 4px 0 40px rgba(255,0,0,0.2);
-  animation: db-slidein 0.35s cubic-bezier(0.16,1,0.3,1);
-}
-
-@keyframes db-slidein {
-  from { transform: translateX(-100%); opacity:0; }
-  to   { transform: translateX(0);     opacity:1; }
-}
-
-.db-inner {
-  padding: 1.25rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  min-height: 100%;
-}
-
-.db-skull {
-  font-size: 2rem;
-  filter: drop-shadow(0 0 10px rgba(255,0,0,0.8));
-  animation: db-blink 0.4s infinite alternate;
-  text-align: center;
-}
-
-.db-title {
-  font-size: 0.78rem;
-  font-weight: 900;
-  color: #FF2222;
-  text-align: center;
-  text-shadow: 0 0 10px rgba(255,0,0,0.6);
-  letter-spacing: 0.06em;
-  font-family: 'Courier New', monospace;
-  text-transform: uppercase;
-  animation: db-blink 0.55s infinite alternate;
-}
-
-@keyframes db-blink { from{opacity:1;} to{opacity:0.5;} }
-
-.db-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  flex: 1;
-}
-
-.db-row {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  padding: 0.3rem 0.5rem;
-  background: rgba(255,0,0,0.04);
-  border: 1px solid rgba(255,0,0,0.1);
-  border-radius: 0.2rem;
-}
-
-.db-label {
-  font-size: 0.58rem;
-  font-weight: 700;
-  color: rgba(255,60,60,0.7);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-family: 'Courier New', monospace;
-}
-
-.db-value {
-  font-size: 0.7rem;
-  color: #FF9999;
-  word-break: break-all;
-  font-family: 'Courier New', monospace;
-  line-height: 1.3;
-}
-
-.db-blink { animation: db-blink 0.45s infinite alternate !important; color:#FF3333 !important; font-weight:900; }
-
-.db-progress {
-  height: 4px;
-  background: rgba(255,0,0,0.08);
-  border-radius: 999px;
-  overflow: hidden;
-  border: 1px solid rgba(255,0,0,0.15);
-  flex-shrink: 0;
-}
-
-.db-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #5A0000, #FF2222);
-  border-radius: 999px;
-  width: 0;
-  transition: width 0.15s linear;
-  box-shadow: 0 0 6px rgba(255,0,0,0.5);
-}
-
-.db-warn {
-  font-size: 0.62rem;
-  color: rgba(255,100,100,0.7);
-  text-align: center;
-  font-family: 'Courier New', monospace;
-  animation: db-blink 1.2s infinite alternate;
-  letter-spacing: 0.04em;
-}
-
-/* Sur mobile le panneau prend toute la largeur */
-@media (max-width: 480px) {
-  .data-blast { width: 100%; border-right: none; border-bottom: 2px solid rgba(255,0,0,0.5); top:0; bottom:auto; height:60vh; }
-}
-
-/* ================================================================
-   SCREAMER OVERLAY — plein écran, 1.7s
-   ================================================================ */
-.scream-overlay {
+.chaos-layer {
   position: fixed;
   inset: 0;
-  z-index: 9999;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 400; /* sous le bouton chatbot (500) */
+  pointer-events: none; /* NE BLOQUE PAS les clics */
   overflow: hidden;
+  background: transparent;
+  transition: background 0.04s;
 }
 
-.scream-img-wrap {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Éléments texte flottants */
+.chaos-item {
+  position: absolute;
+  white-space: nowrap;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #FF3333;
+  text-shadow: 0 0 8px rgba(255,0,0,0.6);
+  pointer-events: none;
+  user-select: none;
 }
 
-.scream-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  display: block;
-  image-rendering: pixelated;
+/* Quand le flash est blanc → les textes passent en noir pour être visibles */
+.chaos-layer[style*="rgba(255,255,255"] .chaos-item {
+  color: #000;
+  text-shadow: none;
 }
 
 @media (max-width: 640px) {
-  .cb-btn { bottom: 1.25rem; right: 1.25rem; width: 3.25rem; height: 3.25rem; }
+  .cb-btn   { bottom: 1.25rem; right: 1.25rem; width: 3.25rem; height: 3.25rem; }
   .cb-panel { bottom: 5.5rem; right: 1rem; left: 1rem; width: auto; }
 }
