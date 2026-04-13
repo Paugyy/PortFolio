@@ -1,7 +1,7 @@
 [
   {
     "id": "p1",
-    "title": "Déploiement SiteWeb Wordpress avec MySQL",
+    "title": "Containeurisation d'un SiteWeb Wordpress avec MySQL",
     "category": "ecole",
     "date": "2026-02-25",
     "stack": "Docker • Wordpress • MySQL",
