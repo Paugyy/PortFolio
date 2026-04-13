@@ -13,7 +13,7 @@
     "resultat": "Infrastructure opérationnelle avec 3 serveurs virtualisés et un service web accessible en interne.",
     "procedures": [
       { "titre": "Docker - bases", "cat": "web" },
-      { "titre": "Installation MySQL", "cat": "base de données" },
+      { "titre": "Installation MySQL", "cat": "base de données" }
     ]
   },
   {
