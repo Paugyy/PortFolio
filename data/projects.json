@@ -12,7 +12,7 @@
     "difficultes": "Gestion des conflits d'adresses IP et configuration du NAT pour l'accès Internet.",
     "resultat": "Infrastructure opérationnelle avec 3 serveurs virtualisés et un service web accessible en interne.",
     "procedures": [
-      { "titre": "Docker - bases", "cat": "Web" },
+      { "titre": "Docker", "cat": "Web" },
       { "titre": "Installation MySQL", "cat": "Base de données" }
     ]
   },
@@ -61,7 +61,7 @@
     "difficultes": "Gestion des volumes persistants et du réseau bridge entre conteneurs.",
     "resultat": "Service déployé en 2 commandes, stable et reproductible sur tout serveur Linux.",
     "procedures": [
-      { "titre": "Docker — bases", "cat": "web" },
+      { "titre": "Docker", "cat": "web" },
       { "titre": "Configuration réseau Debian", "cat": "reseau" }
     ]
   }
