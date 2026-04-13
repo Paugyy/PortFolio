@@ -2,7 +2,7 @@
   {
     "id": "p1",
     "title": "Déploiement SiteWeb Wordpress avec MySQL",
-    "category": "Ecole",
+    "category": "ecole",
     "date": "2026-02-25",
     "stack": "Docker • Wordpress • MySQL",
     "summary": "Déploiement d'un SiteWeb Wordpress avec sa propre Base de Données.",
@@ -12,10 +12,8 @@
     "difficultes": "Gestion des conflits d'adresses IP et configuration du NAT pour l'accès Internet.",
     "resultat": "Infrastructure opérationnelle avec 3 serveurs virtualisés et un service web accessible en interne.",
     "procedures": [
-      { "titre": "Installation Debian", "cat": "systeme" },
-      { "titre": "Configuration SSH", "cat": "systeme" },
-      { "titre": "Configuration réseau Debian", "cat": "reseau" },
-      { "titre": "Installation Apache2", "cat": "web" }
+      { "titre": "Docker - bases", "cat": "web" },
+      { "titre": "Installation MySQL", "cat": "base de données" },
     ]
   },
   {
