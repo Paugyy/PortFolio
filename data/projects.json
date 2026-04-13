@@ -7,9 +7,9 @@
     "stack": "Docker • Wordpress • MySQL",
     "summary": "Containeurisation d'un SiteWeb Wordpress avec sa propre Base de Données.",
     "context": "J'ai déployé un containeur contenant Wordpress et un autre contenant la base de donnée MySQL du site Wordpress.",
-    "objectifs": "Déployer deux containeur qui fonctionne ensemble sur le même Network.",
-    "etapes": "Installation de Docker Desktop, Création des containeurs à partir des Docker Compose, Comande.",
-    "difficultes": "Bien placer les Containeurs dans le même Network, la création correcte de la BDD dans le Docker Compose.",
+    "objectifs": "Déployer deux containeur qui fonctionne ensemble sur le même 'Network'.",
+    "etapes": "Installation de Docker Desktop, Création des containeurs à partir des Docker Compose, Comande 'docker-compose -f NomDuFichier up -d'.",
+    "difficultes": "Bien placer les Containeurs dans le même 'Network', la création correcte de la BDD dans le Docker Compose.",
     "resultat": "Un site web Fonctionnel avec une base de données fonctionnels, Deux containeurs dépendant l'un de l'autre pour fonctionner.",
     "procedures": [
       { "titre": "Docker", "cat": "Web" },
