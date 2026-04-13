@@ -35,7 +35,7 @@ const PROCEDURES_DATA = {
     <h3>VirtualHost</h3><pre>&lt;VirtualHost *:80&gt;\n  ServerName monsite.local\n  DocumentRoot /var/www/monsite\n&lt;/VirtualHost&gt;</pre>
     <h3>Activer</h3><pre>a2ensite monsite.conf && systemctl reload apache2</pre>`,
 
-  "Docker - bases": `<h2>Docker - bases</h2><p><strong>Catégorie :</strong> Web</p><hr>
+  "Docker": `<h2>Docker</h2><p><strong>Catégorie :</strong> Web</p><hr>
     <h3>Installation</h3><pre>apt install docker.io -y\nsystemctl enable docker\nusermod -aG docker monuser</pre>
     <h3>Commandes essentielles</h3><pre>docker pull image:tag\ndocker run -d -p 80:80 --name monc image\ndocker ps && docker stop monc</pre>
     <h3>Docker Compose</h3><pre>docker-compose up -d\ndocker-compose down</pre>`,
