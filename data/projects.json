@@ -1,11 +1,11 @@
 [
   {
     "id": "p1",
-    "title": "Déploiement infrastructure réseau",
-    "category": "entreprise",
+    "title": "Déploiement SiteWeb Wordpress avec MySQL",
+    "category": "Ecole",
     "date": "2026-02-25",
-    "stack": "Debian • VirtualBox • Apache2 • SSH",
-    "summary": "Mise en place d'une infrastructure réseau virtuelle en entreprise.",
+    "stack": "Docker • Wordpress • MySQL",
+    "summary": "Déploiement d'un SiteWeb Wordpress avec sa propre Base de Données.",
     "context": "Dans le cadre de mon stage, j'ai dû déployer une infrastructure réseau complète pour un service interne.",
     "objectifs": "Virtualiser les serveurs, configurer le réseau interne et exposer un service web.",
     "etapes": "Création des VMs sous VirtualBox, installation de Debian 12, configuration SSH, déploiement Apache2 avec VirtualHost.",
