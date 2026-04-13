@@ -12,8 +12,8 @@
     "difficultes": "Gestion des conflits d'adresses IP et configuration du NAT pour l'accès Internet.",
     "resultat": "Infrastructure opérationnelle avec 3 serveurs virtualisés et un service web accessible en interne.",
     "procedures": [
-      { "titre": "Docker - bases", "cat": "web" },
-      { "titre": "Installation MySQL", "cat": "base de données" }
+      { "titre": "Docker - bases", "cat": "Web" },
+      { "titre": "Installation MySQL", "cat": "Base de données" }
     ]
   },
   {
