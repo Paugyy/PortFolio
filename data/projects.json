@@ -1,21 +1,19 @@
 [
   {
     "id": "p1",
-    "title": "Déploiement infrastructure réseau",
-    "category": "entreprise",
+    "title": "Déploiement SiteWeb Wordpress avec MySQL",
+    "category": "ecole",
     "date": "2026-02-25",
-    "stack": "Debian • VirtualBox • Apache2 • SSH",
-    "summary": "Mise en place d'une infrastructure réseau virtuelle en entreprise.",
+    "stack": "Docker • Wordpress • MySQL",
+    "summary": "Déploiement d'un SiteWeb Wordpress avec sa propre Base de Données.",
     "context": "Dans le cadre de mon stage, j'ai dû déployer une infrastructure réseau complète pour un service interne.",
     "objectifs": "Virtualiser les serveurs, configurer le réseau interne et exposer un service web.",
     "etapes": "Création des VMs sous VirtualBox, installation de Debian 12, configuration SSH, déploiement Apache2 avec VirtualHost.",
     "difficultes": "Gestion des conflits d'adresses IP et configuration du NAT pour l'accès Internet.",
     "resultat": "Infrastructure opérationnelle avec 3 serveurs virtualisés et un service web accessible en interne.",
     "procedures": [
-      { "titre": "Installation Debian", "cat": "systeme" },
-      { "titre": "Configuration SSH", "cat": "systeme" },
-      { "titre": "Configuration réseau Debian", "cat": "reseau" },
-      { "titre": "Installation Apache2", "cat": "web" }
+      { "titre": "Docker", "cat": "Web" },
+      { "titre": "Installation MySQL", "cat": "Base de données" }
     ]
   },
   {
@@ -63,7 +61,7 @@
     "difficultes": "Gestion des volumes persistants et du réseau bridge entre conteneurs.",
     "resultat": "Service déployé en 2 commandes, stable et reproductible sur tout serveur Linux.",
     "procedures": [
-      { "titre": "Docker — bases", "cat": "web" },
+      { "titre": "Docker", "cat": "web" },
       { "titre": "Configuration réseau Debian", "cat": "reseau" }
     ]
   }
