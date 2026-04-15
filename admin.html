@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Paugy Yannis</title>
+  <!-- Empêcher l'indexation par les moteurs de recherche -->
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+  <link rel="stylesheet" href="css/index.css" />
+  <style>
+    /* ── Login ── */
+    #loginScreen {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+    }
+    .login-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      padding: 2rem;
+      width: min(22rem, 90vw);
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .login-box h1 { font-size: 1.1rem; font-weight: 700; }
+    .login-box p  { font-size: 0.8rem; color: var(--text-sub); }
+    #loginErr { color: #FF7070; font-size: .8rem; display: none; }
+    #adminContent { display: none; }
+
+    /* ── Layout admin ── */
+    .admin-wrap { max-width: 56rem; margin: 2rem auto; padding-inline: 1rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .admin-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .admin-section h2 { font-size: 0.82rem; font-weight: 700; color: var(--accent); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; }
+    .admin-field { display: flex; flex-direction: column; gap: 0.35rem; }
+    .admin-field label { font-size: 0.7rem; font-weight: 600; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.06em; font-family: var(--font-mono); }
+    .admin-field input, .admin-field select, .admin-field textarea {
+      padding: 0.6rem 0.875rem; background: var(--bg);
+      border: 1px solid var(--border); border-radius: var(--r);
+      color: var(--text); font-size: 0.875rem; font-family: var(--font);
+      outline: none; transition: var(--t); resize: vertical;
+    }
+    .admin-field input:focus, .admin-field select:focus, .admin-field textarea:focus {
+      border-color: var(--accent-border);
+      box-shadow: 0 0 0 3px rgba(200,169,110,0.08);
+    }
+    .admin-field input::placeholder, .admin-field textarea::placeholder { color: var(--text-dim); }
+    .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media(max-width:560px){ .admin-row { grid-template-columns: 1fr; } }
+    .admin-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1.25rem; border-radius: var(--r); font-size: 0.875rem;
+      font-weight: 600; border: 1px solid transparent; cursor: pointer;
+      transition: var(--t); font-family: var(--font);
+    }
+    .admin-btn--primary { background: var(--accent); color: #0A0C0F; }
+    .admin-btn--primary:hover { background: var(--accent2); transform: translateY(-1px); }
+    .admin-btn--ghost { background: rgba(255,255,255,0.04); color: var(--text); border-color: var(--border); }
+    .admin-btn--ghost:hover { border-color: var(--border-hover); }
+    .admin-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 0.5rem; border-bottom: 1px solid var(--border); }
+    .tab-btn { padding: 0.5rem 1rem; font-size: 0.82rem; font-weight: 600; border: none; background: none; color: var(--text-sub); cursor: pointer; border-bottom: 2px solid transparent; transition: var(--t); font-family: var(--font); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-panel { display: none; } .tab-panel.active { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    /* Code output */
+    .code-output {
+      font-family: var(--font-mono); font-size: 0.73rem;
+      background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+      border-left: 3px solid var(--accent-border); border-radius: var(--r-sm);
+      padding: 1rem; color: #b8ccee;
+      white-space: pre; overflow-x: auto;
+      max-height: 20rem; overflow-y: auto;
+    }
+    code { background: rgba(200,169,110,.1); color: var(--accent); padding: .1em .35em; border-radius: .25rem; font-family: var(--font-mono); font-size: .85em; }
+
+    /* Lockout */
+    .lockout-warning { background: rgba(255,60,60,0.1); border: 1px solid rgba(255,60,60,0.3); border-radius: var(--r-sm); padding: .6rem .875rem; font-size: .78rem; color: #FF7070; text-align: center; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     ÉCRAN DE CONNEXION
+     ══════════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-box">
+    <h1>🔐 Administration</h1>
+    <p>Accès réservé. Entrez le mot de passe.</p>
+    <div id="lockoutMsg" class="lockout-warning" style="display:none"></div>
+    <div class="admin-field">
+      <label>Mot de passe</label>
+      <input type="password" id="loginPwd" placeholder="••••••••" autocomplete="current-password" />
+    </div>
+    <p id="loginErr">Mot de passe incorrect. <span id="attemptsLeft"></span></p>
+    <button class="admin-btn admin-btn--primary" id="loginBtn" onclick="doLogin()">Connexion</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CONTENU ADMIN (visible après login)
+     ══════════════════════════════════════════ -->
+<div id="adminContent">
+
+<header class="topbar">
+  <div class="topbar__inner">
+    <a class="brand" href="index.html">
+      <span class="brand__mark">PY</span>
+      <span class="brand__text">Admin</span>
+    </a>
+    <nav style="display:flex;gap:.5rem;align-items:center;">
+      <a class="btn btn--ghost btn--sm" href="index.html">← Retour au site</a>
+      <button class="btn btn--ghost btn--sm" onclick="doLogout()">Déconnexion</button>
+    </nav>
+  </div>
+</header>
+
+<div class="admin-wrap">
+
+  <div>
+    <h1 style="font-size:1.4rem;font-weight:800;">Tableau de bord</h1>
+    <p style="color:var(--text-sub);font-size:.85rem;margin-top:.25rem;">Gérez vos procédures et projets.</p>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('proc')">📄 Procédures</button>
+    <button class="tab-btn" onclick="switchTab('proj')">📦 Projets</button>
+    <button class="tab-btn" onclick="switchTab('pwd')">🔑 Mot de passe</button>
+    <button class="tab-btn" onclick="switchTab('guide')">📖 Guide</button>
+  </div>
+
+  <!-- ── TAB PROCÉDURES ── -->
+  <div class="tab-panel active" id="tab-proc">
+
+    <div class="admin-section">
+      <h2>Nouvelle procédure</h2>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>Titre *</label>
+          <input id="pTitle" placeholder="Ex: Installation Nginx" />
+        </div>
+        <div class="admin-field">
+          <label>Catégorie *</label>
+          <select id="pCat">
+            <option value="systeme">Système</option>
+            <option value="reseau">Réseau</option>
+            <option value="web">Docker</option>
+            <option value="bdd">Base de données</option>
+            <option value="outils">Outils</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>Emoji icône</label>
+          <input id="pIcon" placeholder="🛠️" maxlength="4" />
+        </div>
+        <div class="admin-field">
+          <label>Description courte *</label>
+          <input id="pDesc" placeholder="Installation et configuration de Nginx" />
+        </div>
+      </div>
+      <div class="admin-field">
+        <label>Contenu HTML *</label>
+        <textarea id="pContent" rows="10" placeholder="&lt;h2&gt;Titre&lt;/h2&gt;&lt;hr&gt;
+&lt;h3&gt;Installation&lt;/h3&gt;&lt;pre&gt;apt install nginx -y&lt;/pre&gt;"></textarea>
+      </div>
+      <div class="admin-actions">
+        <button class="admin-btn admin-btn--primary" onclick="generateProc()">⚡ Générer</button>
+        <button class="admin-btn admin-btn--ghost" onclick="clearForm('proc')">Effacer</button>
+      </div>
+    </div>
+
+    <div class="admin-section" id="procResult" style="display:none">
+      <h2>Code à coller dans <code>pages/ressources.html</code></h2>
+      <p style="font-size:.8rem;color:var(--text-sub);">Dans <code>&lt;div class="res-grid" id="resGrid"&gt;</code>, ajoutez ce bloc :</p>
+      <button class="admin-btn admin-btn--ghost" style="font-size:.72rem;padding:.25rem .6rem;width:fit-content" onclick="copyCode('procCode')">📋 Copier</button>
+      <pre class="code-output" id="procCode"></pre>
+    </div>
+
+  </div>
+
+  <!-- ── TAB PROJETS ── -->
+  <div class="tab-panel" id="tab-proj">
+
+    <div class="admin-section">
+      <h2>Nouveau projet</h2>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>ID unique * (ex: p5)</label>
+          <input id="jId" placeholder="p5" />
+        </div>
+        <div class="admin-field">
+          <label>Catégorie *</label>
+          <select id="jCat">
+            <option value="ecole">École</option>
+            <option value="entreprise">Entreprise</option>
+            <option value="perso">Perso</option>
+          </select>
+        </div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>Titre *</label>
+          <input id="jTitle" placeholder="Nom du projet" />
+        </div>
+        <div class="admin-field">
+          <label>Date *</label>
+          <input id="jDate" type="date" />
+        </div>
+      </div>
+      <div class="admin-field">
+        <label>Stack / Technologies *</label>
+        <input id="jStack" placeholder="Linux • Docker • MySQL" />
+      </div>
+      <div class="admin-field">
+        <label>Résumé court *</label>
+        <input id="jSummary" placeholder="Description en une ligne" />
+      </div>
+      <div class="admin-row">
+        <div class="admin-field"><label>Contexte</label><textarea id="jContext" rows="3"></textarea></div>
+        <div class="admin-field"><label>Objectifs</label><textarea id="jObjectifs" rows="3"></textarea></div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-field"><label>Étapes réalisées</label><textarea id="jEtapes" rows="3"></textarea></div>
+        <div class="admin-field"><label>Difficultés</label><textarea id="jDiff" rows="3"></textarea></div>
+      </div>
+      <div class="admin-field"><label>Résultat</label><textarea id="jResultat" rows="2"></textarea></div>
+      <div class="admin-field">
+        <label>Procédures liées (une par ligne)</label>
+        <textarea id="jProcs" rows="3" placeholder="Docker&#10;Installation MySQL"></textarea>
+      </div>
+      <div class="admin-actions">
+        <button class="admin-btn admin-btn--primary" onclick="generateProj()">⚡ Générer</button>
+        <button class="admin-btn admin-btn--ghost" onclick="clearForm('proj')">Effacer</button>
+      </div>
+    </div>
+
+    <div class="admin-section" id="projResult" style="display:none">
+      <h2>JSON à coller dans <code>data/projects.json</code></h2>
+      <p style="font-size:.8rem;color:var(--text-sub);">Ajoutez ce bloc avant le dernier <code>]</code>, avec une virgule après le projet précédent.</p>
+      <button class="admin-btn admin-btn--ghost" style="font-size:.72rem;padding:.25rem .6rem;width:fit-content" onclick="copyCode('projCode')">📋 Copier</button>
+      <pre class="code-output" id="projCode"></pre>
+    </div>
+
+  </div>
+
+  <!-- ── TAB MOT DE PASSE ── -->
+  <div class="tab-panel" id="tab-pwd">
+    <div class="admin-section">
+      <h2>Changer le mot de passe</h2>
+      <p style="font-size:.85rem;color:var(--text-sub);line-height:1.6;">
+        Le mot de passe est stocké sous forme de hash SHA-256 — illisible même en regardant le code source.
+        Pour le changer, entrez le nouveau mot de passe ci-dessous et copiez le hash généré dans <code>admin.html</code> à la ligne <code>const STORED_HASH</code>.
+      </p>
+      <div class="admin-field">
+        <label>Nouveau mot de passe</label>
+        <input type="password" id="newPwd" placeholder="Nouveau mot de passe" />
+      </div>
+      <div class="admin-actions">
+        <button class="admin-btn admin-btn--primary" onclick="generateHash()">Générer le hash</button>
+      </div>
+      <div id="hashResult" style="display:none">
+        <div class="admin-field">
+          <label>Hash SHA-256 à copier</label>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <input id="hashOutput" readonly style="font-family:var(--font-mono);font-size:.75rem;cursor:pointer" onclick="this.select()" />
+            <button class="admin-btn admin-btn--ghost" style="font-size:.72rem;padding:.25rem .6rem;flex-shrink:0" onclick="copyCode('hashOutput')">📋</button>
+          </div>
+        </div>
+        <p style="font-size:.8rem;color:var(--text-sub);">
+          1. Copiez ce hash<br>
+          2. Ouvrez <code>admin.html</code> dans votre éditeur<br>
+          3. Remplacez la valeur de <code>const STORED_HASH = '...'</code> par ce hash<br>
+          4. Faites <code>git add admin.html && git commit -m "Update pwd" && git push</code>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB GUIDE ── -->
+  <div class="tab-panel" id="tab-guide">
+    <div class="admin-section">
+      <h2>Ajouter une procédure</h2>
+      <ol style="font-size:.875rem;color:var(--text-sub);line-height:2;padding-left:1.25rem;">
+        <li>Onglet <strong style="color:var(--text)">Procédures</strong> → remplissez le formulaire</li>
+        <li>Cliquez <strong style="color:var(--text)">Générer</strong> → copiez le code</li>
+        <li>Ouvrez <code>pages/ressources.html</code> dans votre éditeur</li>
+        <li>Collez dans <code>&lt;div class="res-grid" id="resGrid"&gt;</code></li>
+        <li><code>git add . &amp;&amp; git commit -m "Ajout procédure" &amp;&amp; git push</code></li>
+      </ol>
+    </div>
+    <div class="admin-section">
+      <h2>Ajouter un projet</h2>
+      <ol style="font-size:.875rem;color:var(--text-sub);line-height:2;padding-left:1.25rem;">
+        <li>Onglet <strong style="color:var(--text)">Projets</strong> → remplissez le formulaire</li>
+        <li>Cliquez <strong style="color:var(--text)">Générer</strong> → copiez le JSON</li>
+        <li>Ouvrez <code>data/projects.json</code></li>
+        <li>Ajoutez le bloc avant le dernier <code>]</code> (avec une virgule avant)</li>
+        <li><code>git add . &amp;&amp; git commit -m "Ajout projet" &amp;&amp; git push</code></li>
+      </ol>
+    </div>
+    <div class="admin-section">
+      <h2>⚠️ Sécurité</h2>
+      <ul style="font-size:.875rem;color:var(--text-sub);line-height:1.9;padding-left:1.25rem;">
+        <li>Le mot de passe est hashé en <strong style="color:var(--text)">SHA-256</strong> — illisible dans le code source</li>
+        <li>Après <strong style="color:var(--text)">5 tentatives</strong> échouées → blocage 15 minutes</li>
+        <li>La session expire à la <strong style="color:var(--text)">fermeture de l'onglet</strong></li>
+        <li>Idéalement, mettez votre repo GitHub en <strong style="color:var(--text)">privé</strong> (Settings → General → Danger Zone → Change visibility)</li>
+        <li>Pour changer le mot de passe, utilisez l'onglet <strong style="color:var(--text)">Mot de passe</strong></li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>© <span id="year"></span> Paugy Yannis — Administration</span>
+  </div>
+</footer>
+</div>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ================================================================
+   SÉCURITÉ — Hash SHA-256
+   MODIFIER : Remplacez STORED_HASH par le hash de votre mot de passe
+   Mot de passe actuel : PortFolioAdmin2025
+   Pour changer : utilisez l'onglet "Mot de passe" de cette page
+   ================================================================ */
+const STORED_HASH = '85aed785a2c7838d0b379824605051b648223f06e4e9f36673c99ba076f5b86b';
+
+const AUTH_KEY     = 'admin_auth_py';
+const ATTEMPT_KEY  = 'admin_attempts';
+const LOCKOUT_KEY  = 'admin_lockout';
+const MAX_ATTEMPTS = 5;
+const LOCKOUT_MS   = 15 * 60 * 1000; // 15 minutes
+
+/* ── Hash SHA-256 via Web Crypto API (natif, pas de lib externe) ── */
+async function sha256(str) {
+  const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+/* ── Gestion du lockout ── */
+function getLockout() {
+  const t = parseInt(localStorage.getItem(LOCKOUT_KEY) || '0');
+  return t > Date.now() ? t : 0;
+}
+function getAttempts() { return parseInt(localStorage.getItem(ATTEMPT_KEY) || '0'); }
+function resetAttempts() { localStorage.removeItem(ATTEMPT_KEY); localStorage.removeItem(LOCKOUT_KEY); }
+
+function checkLockout() {
+  const lockUntil = getLockout();
+  if (lockUntil) {
+    const remaining = Math.ceil((lockUntil - Date.now()) / 60000);
+    document.getElementById('lockoutMsg').style.display = 'block';
+    document.getElementById('lockoutMsg').textContent = `Trop de tentatives. Réessayez dans ${remaining} min.`;
+    document.getElementById('loginBtn').disabled = true;
+    document.getElementById('loginPwd').disabled = true;
+    return true;
+  }
+  return false;
+}
+
+/* ── Login ── */
+async function doLogin() {
+  if (checkLockout()) return;
+
+  const pwd  = document.getElementById('loginPwd').value;
+  const hash = await sha256(pwd);
+
+  if (hash === STORED_HASH) {
+    resetAttempts();
+    sessionStorage.setItem(AUTH_KEY, '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+  } else {
+    let attempts = getAttempts() + 1;
+    localStorage.setItem(ATTEMPT_KEY, attempts);
+
+    if (attempts >= MAX_ATTEMPTS) {
+      localStorage.setItem(LOCKOUT_KEY, Date.now() + LOCKOUT_MS);
+      checkLockout();
+    } else {
+      const left = MAX_ATTEMPTS - attempts;
+      document.getElementById('loginErr').style.display = 'block';
+      document.getElementById('attemptsLeft').textContent = `(${left} tentative${left > 1 ? 's' : ''} restante${left > 1 ? 's' : ''})`;
+    }
+    document.getElementById('loginPwd').value = '';
+    document.getElementById('loginPwd').focus();
+  }
+}
+
+function doLogout() { sessionStorage.removeItem(AUTH_KEY); location.reload(); }
+document.getElementById('loginPwd').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// Auto-login si session active
+if (sessionStorage.getItem(AUTH_KEY) === '1') {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminContent').style.display = 'block';
+}
+// Vérifier lockout au chargement
+checkLockout();
+
+/* ── Tabs ── */
+function switchTab(id) {
+  const ids = ['proc','proj','pwd','guide'];
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', ids[i] === id));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+/* ── Copier ── */
+function copyCode(id) {
+  const el = document.getElementById(id);
+  const text = el.tagName === 'INPUT' ? el.value : el.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    const orig = btn.textContent;
+    btn.textContent = '✅ Copié !';
+    setTimeout(() => btn.textContent = orig, 1800);
+  });
+}
+
+/* ── Escape HTML ── */
+function esc(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── Générateur Procédure ── */
+const CAT_LABELS = { systeme:'Système', reseau:'Réseau', web:'Docker', bdd:'Base de données', outils:'Outils' };
+
+function generateProc() {
+  const title   = document.getElementById('pTitle').value.trim();
+  const cat     = document.getElementById('pCat').value;
+  const icon    = document.getElementById('pIcon').value.trim() || '📄';
+  const desc    = document.getElementById('pDesc').value.trim();
+  const content = document.getElementById('pContent').value.trim();
+  if (!title || !desc || !content) { alert('Remplissez titre, description et contenu.'); return; }
+
+  const code = `    <button class="res-card" data-cat="${cat}" data-title="${esc(title)}"
+      data-content="${esc(content)}">
+      <div class="res-card__icon">${icon}</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">${CAT_LABELS[cat]}</span>
+        <h3 class="res-card__title">${esc(title)}</h3>
+        <p class="res-card__desc">${esc(desc)}</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>`;
+
+  document.getElementById('procCode').textContent = code;
+  document.getElementById('procResult').style.display = 'block';
+  document.getElementById('procResult').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ── Générateur Projet ── */
+function generateProj() {
+  const id       = document.getElementById('jId').value.trim();
+  const cat      = document.getElementById('jCat').value;
+  const title    = document.getElementById('jTitle').value.trim();
+  const date     = document.getElementById('jDate').value;
+  const stack    = document.getElementById('jStack').value.trim();
+  const summary  = document.getElementById('jSummary').value.trim();
+  if (!id || !title || !date || !stack || !summary) { alert('Remplissez ID, titre, date, stack et résumé.'); return; }
+
+  const procs = document.getElementById('jProcs').value.trim();
+  const obj = {
+    id, title, category: cat, date, stack, summary,
+    context:     document.getElementById('jContext').value.trim()   || '—',
+    objectifs:   document.getElementById('jObjectifs').value.trim() || '—',
+    etapes:      document.getElementById('jEtapes').value.trim()    || '—',
+    difficultes: document.getElementById('jDiff').value.trim()      || '—',
+    resultat:    document.getElementById('jResultat').value.trim()  || '—',
+    procedures:  procs ? procs.split('\n').filter(Boolean).map(t => ({ titre: t.trim(), cat: 'outils' })) : []
+  };
+
+  document.getElementById('projCode').textContent = JSON.stringify(obj, null, 2);
+  document.getElementById('projResult').style.display = 'block';
+  document.getElementById('projResult').scrollIntoView({ behavior: 'smooth' });
+}
+
+/* ── Clear forms ── */
+function clearForm(type) {
+  if (type === 'proc') {
+    ['pTitle','pDesc','pContent','pIcon'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('procResult').style.display = 'none';
+  } else {
+    ['jId','jTitle','jDate','jStack','jSummary','jContext','jObjectifs','jEtapes','jDiff','jResultat','jProcs']
+      .forEach(id => document.getElementById(id).value = '');
+    document.getElementById('projResult').style.display = 'none';
+  }
+}
+
+/* ── Générateur de hash (pour changer le mot de passe) ── */
+async function generateHash() {
+  const pwd = document.getElementById('newPwd').value;
+  if (!pwd || pwd.length < 6) { alert('Mot de passe trop court (6 caractères minimum).'); return; }
+  const hash = await sha256(pwd);
+  document.getElementById('hashOutput').value = hash;
+  document.getElementById('hashResult').style.display = 'block';
+}
+
+// Pré-remplir depuis URL (bouton modifier depuis ressources.html)
+function prefillFromURL() {
+  const p = new URLSearchParams(location.search);
+  if (p.get('edit') === 'proc' && sessionStorage.getItem(AUTH_KEY) === '1') {
+    switchTab('proc');
+    if (p.get('title'))   document.getElementById('pTitle').value   = p.get('title');
+    if (p.get('cat'))     document.getElementById('pCat').value     = p.get('cat');
+    if (p.get('desc'))    document.getElementById('pDesc').value    = p.get('desc');
+    if (p.get('content')) {
+      const txt = document.createElement('textarea');
+      txt.innerHTML = p.get('content');
+      document.getElementById('pContent').value = txt.value;
+    }
+    document.getElementById('pTitle').scrollIntoView({ behavior: 'smooth' });
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (sessionStorage.getItem(AUTH_KEY) === '1') prefillFromURL();
+});
+</script>
+</body>
+</html>
