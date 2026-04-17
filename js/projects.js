@@ -1,69 +1,415 @@
-/* ================================================================
-   PROJECTS.JS — Gestion des projets (carrousel + grille + popup)
-   ----------------------------------------------------------------
-   MODIFIER : Les données dans data/projects.json
-   MODIFIER : Les procédures disponibles dans PROCEDURES_DATA ci-dessous
-   ================================================================ */
-
 'use strict';
 
-/* ── Données des procédures (pour les ouvrir depuis la popup projet)
-   MODIFIER : Ajouter/modifier des procédures ici.
-   Le champ "titre" doit correspondre exactement à celui dans projects.json
-   ── */
 const PROCEDURES_DATA = {
-  "Installation Debian": `<h2>Installation Debian</h2><p><strong>Catégorie :</strong> Système</p><hr>
-    <h3>Prérequis</h3><ul><li>ISO Debian 12 (Bookworm)</li><li>VirtualBox ou machine physique</li><li>Minimum 20 Go d'espace disque</li></ul>
-    <h3>Étapes</h3><ol><li>Télécharger l'ISO sur <code>debian.org</code></li><li>Créer une VM VirtualBox (2 Go RAM min)</li><li>Démarrer sur l'ISO → <em>Graphical Install</em></li><li>Configurer langue, clavier, fuseau horaire</li><li>Partitionner le disque (méthode guidée)</li><li>Installer GRUB sur le MBR</li></ol>
-    <h3>Post-installation</h3><pre>apt update && apt upgrade -y\napt install sudo vim -y\nusermod -aG sudo monuser</pre>`,
+
+  /* ════════════════════════════════════════
+     SYSTÈME
+  ════════════════════════════════════════ */
+  "Installation Debian": `<h2>Installation Debian 12</h2><p><strong>Catégorie :</strong> Système</p><hr>
+    <h3>Prérequis</h3>
+    <ul><li>ISO Debian 12 Bookworm : <code>debian.org/distrib/</code></li><li>VirtualBox / Proxmox ou machine physique</li><li>Minimum 20 Go disque, 2 Go RAM</li></ul>
+    <h3>Création VM VirtualBox</h3>
+    <pre>Nouvelle VM → Linux → Debian 64-bit
+RAM : 2048 Mo minimum
+Disque : VDI dynamique 20 Go
+Réseau : Adaptateur pont (Bridged)</pre>
+    <h3>Installation</h3>
+    <ol><li>Démarrer sur l'ISO → <em>Graphical Install</em></li><li>Langue : Français / Fuseau : Europe/Paris</li><li>Partitionnement : méthode guidée — disque entier</li><li>Miroir réseau : deb.debian.org</li><li>Cocher : utilitaires système standard + serveur SSH</li><li>Installer GRUB sur le MBR (/dev/sda)</li></ol>
+    <h3>Post-installation</h3>
+    <pre>apt update && apt upgrade -y
+apt install sudo curl wget vim git net-tools -y
+usermod -aG sudo votre_utilisateur
+reboot</pre>`,
 
   "Configuration SSH": `<h2>Configuration SSH</h2><p><strong>Catégorie :</strong> Système</p><hr>
-    <h3>Installation</h3><pre>apt install openssh-server -y\nsystemctl enable ssh && systemctl start ssh</pre>
-    <h3>Paramètres (/etc/ssh/sshd_config)</h3><pre>Port 22\nPermitRootLogin no\nPasswordAuthentication yes</pre>
-    <h3>Connexion client</h3><pre>ssh utilisateur@adresse_ip</pre>
-    <h3>Clés SSH</h3><pre>ssh-keygen -t ed25519\nssh-copy-id utilisateur@serveur</pre>`,
+    <h3>Installation du serveur SSH</h3>
+    <pre>apt install openssh-server -y
+systemctl enable ssh
+systemctl start ssh
+systemctl status ssh</pre>
+    <h3>Configuration (/etc/ssh/sshd_config)</h3>
+    <pre>Port 22
+PermitRootLogin no
+PasswordAuthentication yes
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys</pre>
+    <h3>Redémarrer après modification</h3>
+    <pre>systemctl restart ssh</pre>
+    <h3>Connexion depuis un client</h3>
+    <pre>ssh utilisateur@adresse_ip
+ssh -p 22 utilisateur@192.168.1.10</pre>
+    <h3>Générer une paire de clés (côté client)</h3>
+    <pre>ssh-keygen -t ed25519 -C "mon@email.com"
+ssh-copy-id utilisateur@192.168.1.10</pre>`,
 
-  "Configuration réseau Debian": `<h2>Configuration réseau Debian</h2><p><strong>Catégorie :</strong> Réseau</p><hr>
-    <h3>Fichier de config</h3><pre>/etc/network/interfaces</pre>
-    <h3>IP statique</h3><pre>auto eth0\niface eth0 inet static\n  address 192.168.1.10\n  netmask 255.255.255.0\n  gateway 192.168.1.1\n  dns-nameservers 8.8.8.8</pre>
-    <h3>Redémarrer</h3><pre>systemctl restart networking</pre>
-    <h3>Vérifier</h3><pre>ip a && ping 8.8.8.8</pre>`,
-
-  "Installation Apache2": `<h2>Installation Apache2</h2><p><strong>Catégorie :</strong> Web</p><hr>
-    <h3>Installation</h3><pre>apt install apache2 -y\nsystemctl enable apache2</pre>
-    <h3>Dossiers clés</h3><pre>/etc/apache2/     → configuration\n/var/www/html/    → racine web</pre>
-    <h3>VirtualHost</h3><pre>&lt;VirtualHost *:80&gt;\n  ServerName monsite.local\n  DocumentRoot /var/www/monsite\n&lt;/VirtualHost&gt;</pre>
-    <h3>Activer</h3><pre>a2ensite monsite.conf && systemctl reload apache2</pre>`,
-
-  "Docker": `<h2>Docker</h2><p><strong>Catégorie :</strong> Web</p><hr>
-    <h3>Installation</h3><pre>apt install docker.io -y\nsystemctl enable docker\nusermod -aG docker monuser</pre>
-    <h3>Commandes essentielles</h3><pre>docker pull image:tag\ndocker run -d -p 80:80 --name monc image\ndocker ps && docker stop monc</pre>
-    <h3>Docker Compose</h3><pre>docker-compose up -d\ndocker-compose down</pre>`,
-
-  "Installation MySQL": `<h2>Installation MySQL</h2><p><strong>Catégorie :</strong> Base de données</p><hr>
-    <h3>Installation</h3><pre>apt install mysql-server -y\nmysql_secure_installation</pre>
-    <h3>Connexion</h3><pre>mysql -u root -p</pre>
-    <h3>Commandes SQL</h3><pre>SHOW DATABASES;\nCREATE DATABASE mabase;\nUSE mabase;\nSHOW TABLES;</pre>
-    <h3>Créer un utilisateur</h3><pre>CREATE USER 'user'@'localhost' IDENTIFIED BY 'mdp';\nGRANT ALL PRIVILEGES ON mabase.* TO 'user'@'localhost';\nFLUSH PRIVILEGES;</pre>`,
-
-  "Git — commandes essentielles": `<h2>Git — commandes essentielles</h2><p><strong>Catégorie :</strong> Outils</p><hr>
-    <h3>Configuration</h3><pre>git config --global user.name 'Prénom Nom'\ngit config --global user.email 'mail@exemple.com'</pre>
-    <h3>Workflow</h3><pre>git status\ngit add .\ngit commit -m 'message'\ngit push origin main</pre>
-    <h3>Branches</h3><pre>git branch ma-branche\ngit checkout ma-branche\ngit merge ma-branche</pre>`,
-
-  "Commandes réseau utiles": `<h2>Commandes réseau utiles</h2><p><strong>Catégorie :</strong> Réseau</p><hr>
-    <h3>Diagnostic</h3><pre>ping adresse\ntraceroute adresse\nnslookup domaine</pre>
-    <h3>Interfaces</h3><pre>ip a\nip route show</pre>
-    <h3>Ports</h3><pre>ss -tuln\nnmap -sV adresse</pre>`,
-
-  "VirtualBox — créer une VM": `<h2>VirtualBox — créer une VM</h2><p><strong>Catégorie :</strong> Outils</p><hr>
-    <h3>Création</h3><ol><li>Cliquer sur Nouvelle</li><li>Choisir Linux/Debian</li><li>Allouer 1 Go RAM minimum</li><li>Créer un disque VDI de 20 Go</li></ol>
-    <h3>Modes réseau</h3><ul><li><strong>NAT</strong> : Internet depuis la VM</li><li><strong>Réseau interne</strong> : entre VMs</li><li><strong>Pont</strong> : VM sur réseau local</li></ul>`,
+  "Clé SSH Windows → VM Debian": `<h2>Clé SSH Windows → VM Debian</h2><p><strong>Catégorie :</strong> Système</p><hr>
+    <h3>Contexte</h3>
+    <p>Ce tutoriel explique comment générer une paire de clés SSH sur Windows et la copier sur une VM Debian pour se connecter sans mot de passe.</p>
+    <h3>1. Générer la clé SSH sur Windows</h3>
+    <p>Ouvrez PowerShell (ou Windows Terminal) :</p>
+    <pre>ssh-keygen -t ed25519 -C "votre@email.com"</pre>
+    <p>Appuyez sur Entrée pour accepter le chemin par défaut :<br><code>C:\Users\VotreNom\.ssh\id_ed25519</code><br>Laissez la passphrase vide (ou définissez-en une).</p>
+    <h3>2. Vérifier les clés générées</h3>
+    <pre>ls $env:USERPROFILE\.ssh\
+# Vous devez voir : id_ed25519 (clé privée) et id_ed25519.pub (clé publique)</pre>
+    <h3>3. Copier la clé publique sur la VM Debian</h3>
+    <p>Depuis PowerShell Windows :</p>
+    <pre>type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh utilisateur@192.168.1.10 "mkdir -p ~/.ssh && cat >> ~/.ssh/authorized_keys"</pre>
+    <p>Ou manuellement : copiez le contenu de id_ed25519.pub, connectez-vous en SSH avec mot de passe, puis :</p>
+    <pre># Sur la VM Debian :
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+nano ~/.ssh/authorized_keys
+# Collez la clé publique, sauvegardez
+chmod 600 ~/.ssh/authorized_keys</pre>
+    <h3>4. Configurer SSH sur la VM pour accepter les clés</h3>
+    <pre># Vérifier dans /etc/ssh/sshd_config :
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+# Redémarrer SSH :
+systemctl restart ssh</pre>
+    <h3>5. Connexion sans mot de passe depuis Windows</h3>
+    <pre>ssh utilisateur@192.168.1.10
+# → Connexion directe sans mot de passe</pre>
+    <h3>6. Optionnel : fichier config SSH Windows</h3>
+    <p>Créez <code>C:\Users\VotreNom\.ssh\config</code> :</p>
+    <pre>Host mavm
+    HostName 192.168.1.10
+    User utilisateur
+    IdentityFile ~/.ssh/id_ed25519</pre>
+    <p>Ensuite : <code>ssh mavm</code> suffit.</p>`,
 
   "Gestion des utilisateurs": `<h2>Gestion des utilisateurs Linux</h2><p><strong>Catégorie :</strong> Système</p><hr>
-    <h3>Créer</h3><pre>adduser nomutilisateur\nusermod -aG sudo nomutilisateur</pre>
-    <h3>Supprimer</h3><pre>deluser --remove-home nomutilisateur</pre>
-    <h3>Lister</h3><pre>cat /etc/passwd</pre>`
+    <h3>Créer un utilisateur</h3>
+    <pre>adduser nomutilisateur
+# Ou sans interaction :
+useradd -m -s /bin/bash nomutilisateur
+passwd nomutilisateur</pre>
+    <h3>Ajouter au groupe sudo</h3>
+    <pre>usermod -aG sudo nomutilisateur</pre>
+    <h3>Supprimer un utilisateur</h3>
+    <pre>deluser --remove-home nomutilisateur</pre>
+    <h3>Lister les utilisateurs</h3>
+    <pre>cat /etc/passwd
+getent passwd</pre>
+    <h3>Changer de groupe</h3>
+    <pre>usermod -aG docker,sudo nomutilisateur
+groups nomutilisateur</pre>`,
+
+  /* ════════════════════════════════════════
+     RÉSEAU
+  ════════════════════════════════════════ */
+  "Configuration réseau Debian": `<h2>Configuration réseau Debian</h2><p><strong>Catégorie :</strong> Réseau</p><hr>
+    <h3>Voir les interfaces disponibles</h3>
+    <pre>ip a
+ip link show</pre>
+    <h3>IP statique (/etc/network/interfaces)</h3>
+    <pre>auto eth0
+iface eth0 inet static
+  address 192.168.1.10
+  netmask 255.255.255.0
+  gateway 192.168.1.1
+  dns-nameservers 8.8.8.8 1.1.1.1</pre>
+    <h3>Redémarrer le réseau</h3>
+    <pre>systemctl restart networking
+ifdown eth0 && ifup eth0</pre>
+    <h3>Vérification</h3>
+    <pre>ip a
+ping -c 4 8.8.8.8
+ping -c 4 google.com</pre>`,
+
+  "Commandes réseau utiles": `<h2>Commandes réseau utiles</h2><p><strong>Catégorie :</strong> Réseau</p><hr>
+    <h3>Afficher la configuration réseau</h3>
+    <pre>ip a               # Adresses IP
+ip route show      # Table de routage
+ip neigh           # Table ARP</pre>
+    <h3>Diagnostics</h3>
+    <pre>ping -c 4 8.8.8.8
+traceroute 8.8.8.8
+nslookup google.com
+dig google.com</pre>
+    <h3>Ports ouverts</h3>
+    <pre>ss -tuln           # Ports en écoute
+ss -tunp           # Avec processus
+netstat -tulnp     # Alternative
+nmap -sV 192.168.1.0/24  # Scanner un réseau</pre>
+    <h3>Test de bande passante</h3>
+    <pre>apt install iperf3 -y
+# Serveur : iperf3 -s
+# Client  : iperf3 -c IP_SERVEUR</pre>
+    <h3>Capture de paquets</h3>
+    <pre>tcpdump -i eth0 -n
+tcpdump -i eth0 port 80</pre>`,
+
+  /* ════════════════════════════════════════
+     DOCKER
+  ════════════════════════════════════════ */
+  "Docker — bases et commandes": `<h2>Docker — bases et commandes</h2><p><strong>Catégorie :</strong> Docker</p><hr>
+    <h3>Installation Docker sur Debian/Ubuntu</h3>
+    <pre>apt update
+apt install ca-certificates curl gnupg -y
+install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(. /etc/os-release && echo $VERSION_CODENAME) stable" | tee /etc/apt/sources.list.d/docker.list
+apt update
+apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+systemctl enable docker && systemctl start docker
+usermod -aG docker $USER</pre>
+    <h3>Commandes essentielles</h3>
+    <pre>docker ps                    # Containers actifs
+docker ps -a                 # Tous les containers
+docker images                # Images locales
+docker pull nginx:latest     # Télécharger une image
+docker run -d -p 80:80 --name monsite nginx   # Lancer
+docker stop monsite          # Arrêter
+docker start monsite         # Démarrer
+docker rm monsite            # Supprimer le container
+docker rmi nginx             # Supprimer l'image
+docker logs monsite          # Voir les logs
+docker exec -it monsite bash # Shell dans le container</pre>
+    <h3>Docker Compose</h3>
+    <pre>docker compose up -d         # Lancer en arrière-plan
+docker compose down          # Arrêter et supprimer
+docker compose ps            # État des services
+docker compose logs -f       # Suivre les logs
+docker compose pull          # Mettre à jour les images</pre>
+    <h3>Volumes et réseau</h3>
+    <pre>docker volume ls             # Lister les volumes
+docker volume create monvol  # Créer un volume
+docker network ls            # Lister les réseaux
+docker network create monreseau  # Créer un réseau</pre>`,
+
+  "Docker WordPress + MySQL — Docker Compose": `<h2>Docker WordPress + MySQL — Docker Compose</h2><p><strong>Catégorie :</strong> Docker</p><hr>
+    <h3>Architecture</h3>
+    <p>Deux containers séparés dans deux dossiers distincts, interconnectés via un réseau Docker <strong>external</strong> partagé nommé <code>wp_network</code>.</p>
+    <pre>projet/
+├── mysql/
+│   └── docker-compose.yml
+└── wordpress/
+    └── docker-compose.yml</pre>
+    <h3>Étape 1 — Créer le réseau partagé</h3>
+    <pre>docker network create wp_network</pre>
+    <h3>Étape 2 — docker-compose.yml MySQL</h3>
+    <pre>services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_wp
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: wppassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - wp_network
+
+volumes:
+  mysql_data:
+
+networks:
+  wp_network:
+    external: true</pre>
+    <h3>Étape 3 — docker-compose.yml WordPress</h3>
+    <pre>services:
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress_app
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: mysql_wp:3306
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: wppassword
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      - mysql
+    networks:
+      - wp_network
+
+volumes:
+  wordpress_data:
+
+networks:
+  wp_network:
+    external: true</pre>
+    <h3>Étape 4 — Démarrage</h3>
+    <pre># 1. D'abord MySQL :
+cd mysql/
+docker compose up -d
+
+# 2. Ensuite WordPress :
+cd ../wordpress/
+docker compose up -d
+
+# 3. Vérifier :
+docker ps</pre>
+    <h3>Accès</h3>
+    <pre>http://localhost:8080
+# Suivre l'assistant d'installation WordPress
+# Les credentials DB sont déjà configurés</pre>
+    <h3>Arrêt</h3>
+    <pre>cd wordpress/ && docker compose down
+cd mysql/    && docker compose down</pre>`,
+
+  "Apache2 + Docker Compose + SSH GitHub": `<h2>Apache2 + Docker Compose + Déploiement via GitHub SSH</h2><p><strong>Catégorie :</strong> Services / Docker</p><hr>
+    <h3>Architecture</h3>
+    <p>Apache2 dans un container Docker, le site web est cloné depuis GitHub via SSH et monté comme volume.</p>
+    <h3>Étape 1 — Générer une clé SSH sur la VM pour GitHub</h3>
+    <pre>ssh-keygen -t ed25519 -C "deploy@monserveur"
+# Clé générée dans ~/.ssh/id_ed25519.pub
+cat ~/.ssh/id_ed25519.pub
+# Copier cette clé publique</pre>
+    <h3>Étape 2 — Ajouter la clé dans GitHub</h3>
+    <ol>
+      <li>GitHub → Settings → SSH and GPG keys → New SSH key</li>
+      <li>Coller la clé publique</li>
+      <li>Tester : <code>ssh -T git@github.com</code></li>
+    </ol>
+    <h3>Étape 3 — Cloner le dépôt sur la VM</h3>
+    <pre>cd /opt
+git clone git@github.com:VotreUser/votre-repo.git monsite
+ls /opt/monsite</pre>
+    <h3>Étape 4 — docker-compose.yml Apache2</h3>
+    <pre>services:
+  apache:
+    image: httpd:2.4
+    container_name: apache_site
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /opt/monsite:/usr/local/apache2/htdocs/
+      - ./httpd.conf:/usr/local/apache2/conf/httpd.conf
+    environment:
+      - TZ=Europe/Paris</pre>
+    <h3>Étape 5 — Démarrer Apache2</h3>
+    <pre>docker compose up -d
+docker logs apache_site</pre>
+    <h3>Étape 6 — Déployer les mises à jour</h3>
+    <pre># Sur la VM, dans le dossier du site :
+cd /opt/monsite
+git pull origin main
+# Apache sert automatiquement les nouveaux fichiers (volume monté)</pre>
+    <h3>Commandes Git utiles pour le déploiement</h3>
+    <pre>git status              # État des fichiers
+git pull origin main    # Récupérer les MAJ
+git log --oneline -5    # Derniers commits
+git diff                # Voir les changements</pre>`,
+
+  /* ════════════════════════════════════════
+     BASE DE DONNÉES
+  ════════════════════════════════════════ */
+  "Installation MySQL": `<h2>Installation MySQL</h2><p><strong>Catégorie :</strong> Base de données</p><hr>
+    <h3>Installation</h3>
+    <pre>apt install mysql-server -y
+systemctl enable mysql
+systemctl start mysql
+mysql_secure_installation</pre>
+    <h3>Connexion root</h3>
+    <pre>mysql -u root -p</pre>
+    <h3>Commandes SQL essentielles</h3>
+    <pre>SHOW DATABASES;
+CREATE DATABASE mabase CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE mabase;
+SHOW TABLES;
+DESCRIBE matable;</pre>
+    <h3>Gestion des utilisateurs</h3>
+    <pre>CREATE USER 'monuser'@'localhost' IDENTIFIED BY 'motdepasse';
+GRANT ALL PRIVILEGES ON mabase.* TO 'monuser'@'localhost';
+GRANT SELECT, INSERT ON mabase.* TO 'lecteur'@'localhost';
+FLUSH PRIVILEGES;
+SHOW GRANTS FOR 'monuser'@'localhost';</pre>
+    <h3>Import / Export</h3>
+    <pre>mysqldump -u root -p mabase > sauvegarde.sql
+mysql -u root -p mabase < sauvegarde.sql</pre>`,
+
+  /* ════════════════════════════════════════
+     SERVICES WEB
+  ════════════════════════════════════════ */
+  "Installation Apache2": `<h2>Installation Apache2</h2><p><strong>Catégorie :</strong> Services</p><hr>
+    <h3>Installation</h3>
+    <pre>apt install apache2 -y
+systemctl enable apache2
+systemctl start apache2</pre>
+    <h3>Structure des dossiers</h3>
+    <pre>/etc/apache2/          → configuration principale
+/etc/apache2/sites-available/  → sites disponibles
+/etc/apache2/sites-enabled/    → sites actifs
+/var/www/html/         → racine web par défaut</pre>
+    <h3>Créer un VirtualHost</h3>
+    <pre>nano /etc/apache2/sites-available/monsite.conf</pre>
+    <pre>&lt;VirtualHost *:80&gt;
+    ServerName monsite.local
+    ServerAdmin admin@monsite.local
+    DocumentRoot /var/www/monsite
+    ErrorLog \${APACHE_LOG_DIR}/monsite_error.log
+    CustomLog \${APACHE_LOG_DIR}/monsite_access.log combined
+    &lt;Directory /var/www/monsite&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+&lt;/VirtualHost&gt;</pre>
+    <h3>Activer le site</h3>
+    <pre>mkdir -p /var/www/monsite
+a2ensite monsite.conf
+a2dissite 000-default.conf
+systemctl reload apache2</pre>
+    <h3>Modules utiles</h3>
+    <pre>a2enmod rewrite    # URL rewriting
+a2enmod ssl        # HTTPS
+a2enmod headers    # Headers HTTP
+systemctl restart apache2</pre>`,
+
+  /* ════════════════════════════════════════
+     OUTILS
+  ════════════════════════════════════════ */
+  "Git — commandes essentielles": `<h2>Git — commandes essentielles</h2><p><strong>Catégorie :</strong> Outils</p><hr>
+    <h3>Configuration initiale</h3>
+    <pre>git config --global user.name "Prénom Nom"
+git config --global user.email "email@exemple.com"
+git config --global init.defaultBranch main</pre>
+    <h3>Initialiser un dépôt</h3>
+    <pre>git init
+git remote add origin git@github.com:user/repo.git</pre>
+    <h3>Workflow quotidien</h3>
+    <pre>git status           # État du dépôt
+git add .            # Ajouter tous les fichiers
+git add fichier.txt  # Ajouter un fichier
+git commit -m "Description du commit"
+git push origin main</pre>
+    <h3>Récupérer les modifications</h3>
+    <pre>git pull origin main
+git fetch origin
+git merge origin/main</pre>
+    <h3>Branches</h3>
+    <pre>git branch                    # Lister les branches
+git branch ma-branche         # Créer une branche
+git checkout ma-branche        # Changer de branche
+git checkout -b nouvelle      # Créer + basculer
+git merge ma-branche          # Fusionner
+git branch -d ma-branche      # Supprimer</pre>
+    <h3>Clé SSH pour GitHub</h3>
+    <pre>ssh-keygen -t ed25519 -C "email@exemple.com"
+cat ~/.ssh/id_ed25519.pub     # Copier dans GitHub
+ssh -T git@github.com         # Tester la connexion</pre>`,
+
+  "VirtualBox — créer une VM": `<h2>VirtualBox — créer une VM</h2><p><strong>Catégorie :</strong> Outils</p><hr>
+    <h3>Création</h3>
+    <ol><li>Nouveau → Nom et OS → Linux / Debian 64-bit</li><li>RAM : 2048 Mo minimum</li><li>Disque dur : VDI, dynamique, 20 Go</li></ol>
+    <h3>Configuration réseau</h3>
+    <ul><li><strong>NAT</strong> : Internet depuis la VM (accès internet uniquement)</li><li><strong>Réseau interne</strong> : communication entre VMs</li><li><strong>Pont (Bridged)</strong> : VM sur le réseau local physique</li><li><strong>Hôte uniquement</strong> : VM ↔ hôte uniquement</li></ul>
+    <h3>Raccourcis VirtualBox</h3>
+    <pre>Ctrl Droit + F   → Plein écran
+Ctrl Droit + S   → Snapshot
+Ctrl Droit + Del → Ctrl+Alt+Suppr
+Ctrl Droit + R   → Redémarrer</pre>`
 };
 
 /* ── Helpers ── */
@@ -92,13 +438,12 @@ function openProject(p) {
   ppMeta.innerHTML    = `<span class="${catClass(p.category)}">${catLabel(p.category)}</span>
     <span style="font-size:.72rem;font-family:var(--font-mono);color:var(--text-sub)">${(p.date||'').slice(0,4)}</span>`;
 
-  /* Corps : sections du projet */
   const sections = [
-    { label: 'Contexte',                  key: 'context'     },
-    { label: 'Objectifs',                 key: 'objectifs'   },
-    { label: 'Étapes réalisées',          key: 'etapes'      },
-    { label: 'Difficultés rencontrées',   key: 'difficultes' },
-    { label: 'Résultat',                  key: 'resultat',  full: true }
+    { label: 'Contexte',                key: 'context'     },
+    { label: 'Objectifs',               key: 'objectifs'   },
+    { label: 'Réalisation du projet',   key: 'etapes'      },
+    { label: 'Difficultés rencontrées', key: 'difficultes' },
+    { label: 'Résultat',                key: 'resultat', full: true }
   ];
 
   const sectionsHTML = sections.map(s => `
@@ -108,8 +453,6 @@ function openProject(p) {
     </div>
   `).join('');
 
-  /* Procédures liées */
-  /* MODIFIER : Ajouter des procédures dans PROCEDURES_DATA et dans projects.json */
   let procsHTML = '';
   if (p.procedures && p.procedures.length) {
     const chips = p.procedures.map(proc => `
@@ -121,7 +464,6 @@ function openProject(p) {
         ${proc.titre}
       </button>
     `).join('');
-
     procsHTML = `
       <div class="popup__section popup__section--full">
         <div class="popup__section-label">Procédures liées</div>
@@ -131,7 +473,6 @@ function openProject(p) {
 
   ppBody.innerHTML = sectionsHTML + procsHTML;
 
-  /* Listener sur les chips procédure */
   ppBody.querySelectorAll('.proc-link').forEach(btn => {
     btn.addEventListener('click', () => openProc(btn.dataset.proc));
   });
@@ -152,7 +493,7 @@ function closeProject() {
 function openProc(titre) {
   const content = PROCEDURES_DATA[titre];
   procTitle.textContent = titre;
-  procBody.innerHTML = content || `<p>Procédure "${titre}" non trouvée. Vérifiez PROCEDURES_DATA dans projects.js.</p>`;
+  procBody.innerHTML = content || `<p>Procédure introuvable pour : "${titre}".</p>`;
   overlayProc.classList.add('is-visible');
   popupProc.classList.add('is-open');
 }
@@ -162,9 +503,9 @@ function closeProc() {
   popupProc.classList.remove('is-open');
 }
 
-if (ppClose)    ppClose.addEventListener('click', closeProject);
-if (overlay)    overlay.addEventListener('click', closeProject);
-if (procClose)  procClose.addEventListener('click', closeProc);
+if (ppClose)     ppClose.addEventListener('click', closeProject);
+if (overlay)     overlay.addEventListener('click', closeProject);
+if (procClose)   procClose.addEventListener('click', closeProc);
 if (overlayProc) overlayProc.addEventListener('click', closeProc);
 
 document.addEventListener('keydown', e => {
@@ -198,7 +539,7 @@ document.addEventListener('keydown', e => {
 
   projects.sort((a,b) => (b.date||'').localeCompare(a.date||''));
 
-  /* ── CARROUSEL (page index) ── */
+  /* ── CARROUSEL (index) ── */
   if (featuredTrack) {
     featuredTrack.innerHTML = projects.slice(0,8).map(p => `
       <div class="feature-card" role="button" tabindex="0" data-id="${p.id}" aria-label="${p.title}">
@@ -215,14 +556,12 @@ document.addEventListener('keydown', e => {
     `).join('');
 
     featuredTrack.querySelectorAll('.feature-card').forEach(card => {
-      const id = card.dataset.id;
-      const p  = projects.find(x => x.id === id);
+      const p = projects.find(x => x.id === card.dataset.id);
       if (!p) return;
       card.addEventListener('click', () => openProject(p));
       card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' '){e.preventDefault();openProject(p);} });
     });
 
-    /* Auto-scroll */
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       let raf = null;
       const tick = () => {
@@ -232,7 +571,7 @@ document.addEventListener('keydown', e => {
         raf = requestAnimationFrame(tick);
       };
       const start = () => { if (!raf) raf = requestAnimationFrame(tick); };
-      const stop  = () => { if (raf)  { cancelAnimationFrame(raf); raf = null; } };
+      const stop  = () => { if (raf) { cancelAnimationFrame(raf); raf = null; } };
       featuredTrack.addEventListener('mouseenter', stop);
       featuredTrack.addEventListener('mouseleave', start);
       start();
@@ -262,7 +601,7 @@ document.addEventListener('keydown', e => {
           <span class="proj-card__year">${(p.date||'').slice(0,4)}</span>
           <span class="proj-card__open">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Détails
+            Voir le projet
           </span>
         </div>
       </button>
@@ -285,5 +624,4 @@ document.addEventListener('keydown', e => {
       render(activeFilter);
     });
   });
-
 })();

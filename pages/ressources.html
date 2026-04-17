@@ -36,8 +36,6 @@
     <p class="pill">BTS SIO · Ressources</p>
     <h1 class="page-title">Mes <span>ressources</span></h1>
     <p class="page-lead">Procédures et documentations techniques classées par catégorie.</p>
-
-    <!-- Barre de recherche -->
     <div class="res-search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
@@ -47,108 +45,167 @@
     </div>
   </div>
 
-  <!-- ══ VUE CATÉGORIES (défaut) ══ -->
-  <div class="cat-grid" id="catGrid">
-
-    <button class="cat-card" data-cat="systeme">
-      <div class="cat-card__icon">🐧</div>
-      <div class="cat-card__body">
-        <h2 class="cat-card__title">Système</h2>
-        <p class="cat-card__sub"><span class="cat-card__count" id="cnt-systeme">0</span> procédures</p>
-      </div>
-      <svg class="cat-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-
-    <button class="cat-card" data-cat="reseau">
-      <div class="cat-card__icon">🌐</div>
-      <div class="cat-card__body">
-        <h2 class="cat-card__title">Réseau</h2>
-        <p class="cat-card__sub"><span class="cat-card__count" id="cnt-reseau">0</span> procédures</p>
-      </div>
-      <svg class="cat-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-
-    <button class="cat-card" data-cat="web">
-      <div class="cat-card__icon">🐳</div>
-      <div class="cat-card__body">
-        <h2 class="cat-card__title">Docker</h2>
-        <p class="cat-card__sub"><span class="cat-card__count" id="cnt-web">0</span> procédures</p>
-      </div>
-      <svg class="cat-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-
-    <button class="cat-card" data-cat="bdd">
-      <div class="cat-card__icon">🗄️</div>
-      <div class="cat-card__body">
-        <h2 class="cat-card__title">Base de données</h2>
-        <p class="cat-card__sub"><span class="cat-card__count" id="cnt-bdd">0</span> procédures</p>
-      </div>
-      <svg class="cat-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-
-    <button class="cat-card" data-cat="outils">
-      <div class="cat-card__icon">⚙️</div>
-      <div class="cat-card__body">
-        <h2 class="cat-card__title">Outils</h2>
-        <p class="cat-card__sub"><span class="cat-card__count" id="cnt-outils">0</span> procédures</p>
-      </div>
-      <svg class="cat-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-
+  <!-- Filtres -->
+  <div class="res-filters">
+    <button class="res-filter active" data-cat="all">Tout</button>
+    <button class="res-filter" data-cat="systeme">Système</button>
+    <button class="res-filter" data-cat="reseau">Réseau</button>
+    <button class="res-filter" data-cat="docker">Docker</button>
+    <button class="res-filter" data-cat="services">Services Web</button>
+    <button class="res-filter" data-cat="bdd">Base de données</button>
+    <button class="res-filter" data-cat="outils">Outils</button>
   </div>
 
-  <!-- ══ VUE RECHERCHE (cachée par défaut) ══ -->
-  <div class="res-grid" id="resGrid" style="display:none">
-    <!-- Procédures cachées — source de données -->
+  <!-- Grille -->
+  <div class="res-grid" id="resGrid">
 
+    <!-- ══ SYSTÈME ══ -->
     <button class="res-card" data-cat="systeme" data-title="Installation Debian"
-      data-content="&lt;h2&gt;Installation Debian&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Système&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Prérequis&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;ISO Debian 12 (Bookworm)&lt;/li&gt;&lt;li&gt;VirtualBox ou machine physique&lt;/li&gt;&lt;li&gt;Minimum 20 Go d'espace disque&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Étapes&lt;/h3&gt;&lt;ol&gt;&lt;li&gt;Télécharger l'ISO sur &lt;code&gt;debian.org&lt;/code&gt;&lt;/li&gt;&lt;li&gt;Créer une VM VirtualBox (2 Go RAM min)&lt;/li&gt;&lt;li&gt;Démarrer sur l'ISO → &lt;em&gt;Graphical Install&lt;/em&gt;&lt;/li&gt;&lt;li&gt;Configurer langue, clavier, fuseau horaire&lt;/li&gt;&lt;li&gt;Partitionner le disque (méthode guidée)&lt;/li&gt;&lt;li&gt;Installer GRUB sur le MBR&lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;Post-installation&lt;/h3&gt;&lt;pre&gt;apt update &amp;amp;&amp;amp; apt upgrade -y&lt;br&gt;apt install sudo vim -y&lt;br&gt;usermod -aG sudo monuser&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Système</span><h3 class="res-card__title">Installation Debian</h3><p class="res-card__desc">Installation complète d'un système Debian 12</p></div>
+      data-content="&lt;h2&gt;Installation Debian 12&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Système&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Prérequis&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;ISO Debian 12 Bookworm — debian.org&lt;/li&gt;&lt;li&gt;VirtualBox / Proxmox ou machine physique&lt;/li&gt;&lt;li&gt;Minimum 20 Go disque, 2 Go RAM&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Création VM VirtualBox&lt;/h3&gt;&lt;pre&gt;Nouvelle VM → Linux → Debian 64-bit&lt;br&gt;RAM : 2048 Mo minimum&lt;br&gt;Disque : VDI dynamique 20 Go&lt;br&gt;Réseau : Adaptateur pont (Bridged)&lt;/pre&gt;&lt;h3&gt;Installation&lt;/h3&gt;&lt;ol&gt;&lt;li&gt;Démarrer sur l'ISO → Graphical Install&lt;/li&gt;&lt;li&gt;Langue : Français / Fuseau : Europe/Paris&lt;/li&gt;&lt;li&gt;Partitionnement : méthode guidée — disque entier&lt;/li&gt;&lt;li&gt;Miroir réseau : deb.debian.org&lt;/li&gt;&lt;li&gt;Cocher : utilitaires système standard + serveur SSH&lt;/li&gt;&lt;li&gt;Installer GRUB sur le MBR (/dev/sda)&lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;Post-installation&lt;/h3&gt;&lt;pre&gt;apt update &amp;amp;&amp;amp; apt upgrade -y&lt;br&gt;apt install sudo curl wget vim git net-tools -y&lt;br&gt;usermod -aG sudo votre_utilisateur&lt;br&gt;reboot&lt;/pre&gt;">
+      <div class="res-card__icon">🐧</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Système</span>
+        <h3 class="res-card__title">Installation Debian 12</h3>
+        <p class="res-card__desc">Installation complète de Debian sur VM ou machine physique</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
     <button class="res-card" data-cat="systeme" data-title="Configuration SSH"
-      data-content="&lt;h2&gt;Configuration SSH&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Système&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Installation&lt;/h3&gt;&lt;pre&gt;apt install openssh-server -y&lt;br&gt;systemctl enable ssh &amp;amp;&amp;amp; systemctl start ssh&lt;/pre&gt;&lt;h3&gt;Paramètres (/etc/ssh/sshd_config)&lt;/h3&gt;&lt;pre&gt;Port 22&lt;br&gt;PermitRootLogin no&lt;br&gt;PasswordAuthentication yes&lt;/pre&gt;&lt;h3&gt;Connexion client&lt;/h3&gt;&lt;pre&gt;ssh utilisateur@adresse_ip&lt;/pre&gt;&lt;h3&gt;Clés SSH&lt;/h3&gt;&lt;pre&gt;ssh-keygen -t ed25519&lt;br&gt;ssh-copy-id utilisateur@serveur&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Système</span><h3 class="res-card__title">Configuration SSH</h3><p class="res-card__desc">Mise en place et sécurisation SSH</p></div>
+      data-content="&lt;h2&gt;Configuration SSH&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Système&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Installation du serveur SSH&lt;/h3&gt;&lt;pre&gt;apt install openssh-server -y&lt;br&gt;systemctl enable ssh&lt;br&gt;systemctl start ssh&lt;br&gt;systemctl status ssh&lt;/pre&gt;&lt;h3&gt;Configuration (/etc/ssh/sshd_config)&lt;/h3&gt;&lt;pre&gt;Port 22&lt;br&gt;PermitRootLogin no&lt;br&gt;PasswordAuthentication yes&lt;br&gt;PubkeyAuthentication yes&lt;br&gt;AuthorizedKeysFile .ssh/authorized_keys&lt;/pre&gt;&lt;h3&gt;Redémarrer après modification&lt;/h3&gt;&lt;pre&gt;systemctl restart ssh&lt;/pre&gt;&lt;h3&gt;Connexion depuis un client&lt;/h3&gt;&lt;pre&gt;ssh utilisateur@adresse_ip&lt;br&gt;ssh -p 22 utilisateur@192.168.1.10&lt;/pre&gt;&lt;h3&gt;Générer une paire de clés (côté client)&lt;/h3&gt;&lt;pre&gt;ssh-keygen -t ed25519 -C &quot;mon@email.com&quot;&lt;br&gt;ssh-copy-id utilisateur@192.168.1.10&lt;/pre&gt;">
+      <div class="res-card__icon">🔐</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Système</span>
+        <h3 class="res-card__title">Configuration SSH</h3>
+        <p class="res-card__desc">Installation, configuration et connexion par clé SSH</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
-    <button class="res-card" data-cat="systeme" data-title="Gestion des utilisateurs"
-      data-content="&lt;h2&gt;Gestion des utilisateurs Linux&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Système&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Créer&lt;/h3&gt;&lt;pre&gt;adduser nomutilisateur&lt;br&gt;usermod -aG sudo nomutilisateur&lt;/pre&gt;&lt;h3&gt;Supprimer&lt;/h3&gt;&lt;pre&gt;deluser --remove-home nomutilisateur&lt;/pre&gt;&lt;h3&gt;Lister&lt;/h3&gt;&lt;pre&gt;cat /etc/passwd&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Système</span><h3 class="res-card__title">Gestion des utilisateurs</h3><p class="res-card__desc">Créer, modifier et supprimer des comptes Linux</p></div>
+    <button class="res-card" data-cat="systeme" data-title="Clé SSH Windows → VM Debian"
+      data-content="&lt;h2&gt;Clé SSH Windows → VM Debian&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Système&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;1. Générer la clé SSH sur Windows (PowerShell)&lt;/h3&gt;&lt;pre&gt;ssh-keygen -t ed25519 -C &quot;votre@email.com&quot;&lt;br&gt;# Accepter le chemin par défaut : C:\Users\VotreNom\.ssh\id_ed25519&lt;br&gt;ls $env:USERPROFILE\.ssh\&lt;br&gt;# → id_ed25519 (privée) + id_ed25519.pub (publique)&lt;/pre&gt;&lt;h3&gt;2. Copier la clé publique sur la VM&lt;/h3&gt;&lt;pre&gt;type $env:USERPROFILE\.ssh\id_ed25519.pub | ssh utilisateur@192.168.1.10 &quot;mkdir -p ~/.ssh &amp;amp;&amp;amp; cat &gt;&gt; ~/.ssh/authorized_keys&quot;&lt;/pre&gt;&lt;h3&gt;3. Sur la VM — vérifier les permissions&lt;/h3&gt;&lt;pre&gt;chmod 700 ~/.ssh&lt;br&gt;chmod 600 ~/.ssh/authorized_keys&lt;/pre&gt;&lt;h3&gt;4. Activer l'auth par clé dans sshd_config&lt;/h3&gt;&lt;pre&gt;PubkeyAuthentication yes&lt;br&gt;AuthorizedKeysFile .ssh/authorized_keys&lt;br&gt;systemctl restart ssh&lt;/pre&gt;&lt;h3&gt;5. Connexion sans mot de passe&lt;/h3&gt;&lt;pre&gt;ssh utilisateur@192.168.1.10&lt;br&gt;# → Connexion directe sans mot de passe&lt;/pre&gt;&lt;h3&gt;6. Raccourci : fichier config SSH Windows&lt;/h3&gt;&lt;pre&gt;# C:\Users\VotreNom\.ssh\config&lt;br&gt;Host mavm&lt;br&gt;    HostName 192.168.1.10&lt;br&gt;    User utilisateur&lt;br&gt;    IdentityFile ~/.ssh/id_ed25519&lt;br&gt;# Utilisation : ssh mavm&lt;/pre&gt;">
+      <div class="res-card__icon">🔑</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Système</span>
+        <h3 class="res-card__title">Clé SSH Windows → VM Debian</h3>
+        <p class="res-card__desc">Générer et déployer une clé SSH de Windows vers une VM Debian</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
+    <button class="res-card" data-cat="systeme" data-title="Gestion des utilisateurs Linux"
+      data-content="&lt;h2&gt;Gestion des utilisateurs Linux&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Système&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Créer un utilisateur&lt;/h3&gt;&lt;pre&gt;adduser nomutilisateur&lt;br&gt;# Ou sans interaction :&lt;br&gt;useradd -m -s /bin/bash nomutilisateur&lt;br&gt;passwd nomutilisateur&lt;/pre&gt;&lt;h3&gt;Ajouter au groupe sudo&lt;/h3&gt;&lt;pre&gt;usermod -aG sudo nomutilisateur&lt;/pre&gt;&lt;h3&gt;Supprimer un utilisateur&lt;/h3&gt;&lt;pre&gt;deluser --remove-home nomutilisateur&lt;/pre&gt;&lt;h3&gt;Lister les utilisateurs&lt;/h3&gt;&lt;pre&gt;cat /etc/passwd&lt;br&gt;getent passwd&lt;/pre&gt;&lt;h3&gt;Gérer les groupes&lt;/h3&gt;&lt;pre&gt;usermod -aG docker,sudo nomutilisateur&lt;br&gt;groups nomutilisateur&lt;/pre&gt;">
+      <div class="res-card__icon">👤</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Système</span>
+        <h3 class="res-card__title">Gestion des utilisateurs Linux</h3>
+        <p class="res-card__desc">Créer, modifier, supprimer des comptes et gérer les groupes</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+
+    <!-- ══ RÉSEAU ══ -->
     <button class="res-card" data-cat="reseau" data-title="Configuration réseau Debian"
-      data-content="&lt;h2&gt;Configuration réseau Debian&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Réseau&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;IP statique&lt;/h3&gt;&lt;pre&gt;auto eth0&lt;br&gt;iface eth0 inet static&lt;br&gt;  address 192.168.1.10&lt;br&gt;  netmask 255.255.255.0&lt;br&gt;  gateway 192.168.1.1&lt;br&gt;  dns-nameservers 8.8.8.8&lt;/pre&gt;&lt;h3&gt;Redémarrer&lt;/h3&gt;&lt;pre&gt;systemctl restart networking&lt;/pre&gt;&lt;h3&gt;Vérifier&lt;/h3&gt;&lt;pre&gt;ip a &amp;amp;&amp;amp; ping 8.8.8.8&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Réseau</span><h3 class="res-card__title">Configuration réseau Debian</h3><p class="res-card__desc">IP statique, passerelle, DNS sous Debian</p></div>
+      data-content="&lt;h2&gt;Configuration réseau Debian&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Réseau&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Voir les interfaces&lt;/h3&gt;&lt;pre&gt;ip a&lt;br&gt;ip link show&lt;/pre&gt;&lt;h3&gt;IP statique (/etc/network/interfaces)&lt;/h3&gt;&lt;pre&gt;auto eth0&lt;br&gt;iface eth0 inet static&lt;br&gt;  address 192.168.1.10&lt;br&gt;  netmask 255.255.255.0&lt;br&gt;  gateway 192.168.1.1&lt;br&gt;  dns-nameservers 8.8.8.8 1.1.1.1&lt;/pre&gt;&lt;h3&gt;Redémarrer le réseau&lt;/h3&gt;&lt;pre&gt;systemctl restart networking&lt;br&gt;ifdown eth0 &amp;amp;&amp;amp; ifup eth0&lt;/pre&gt;&lt;h3&gt;Vérification&lt;/h3&gt;&lt;pre&gt;ip a&lt;br&gt;ping -c 4 8.8.8.8&lt;br&gt;ping -c 4 google.com&lt;/pre&gt;">
+      <div class="res-card__icon">🌐</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Réseau</span>
+        <h3 class="res-card__title">Configuration réseau Debian</h3>
+        <p class="res-card__desc">IP statique, passerelle et DNS sous Debian</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
     <button class="res-card" data-cat="reseau" data-title="Commandes réseau utiles"
-      data-content="&lt;h2&gt;Commandes réseau utiles&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Réseau&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Diagnostic&lt;/h3&gt;&lt;pre&gt;ping adresse&lt;br&gt;traceroute adresse&lt;br&gt;nslookup domaine&lt;/pre&gt;&lt;h3&gt;Interfaces&lt;/h3&gt;&lt;pre&gt;ip a&lt;br&gt;ip route show&lt;/pre&gt;&lt;h3&gt;Ports&lt;/h3&gt;&lt;pre&gt;ss -tuln&lt;br&gt;nmap -sV adresse&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Réseau</span><h3 class="res-card__title">Commandes réseau utiles</h3><p class="res-card__desc">Diagnostic, interfaces et ports</p></div>
+      data-content="&lt;h2&gt;Commandes réseau utiles&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Réseau&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Afficher la configuration&lt;/h3&gt;&lt;pre&gt;ip a               # Adresses IP&lt;br&gt;ip route show      # Table de routage&lt;br&gt;ip neigh           # Table ARP&lt;/pre&gt;&lt;h3&gt;Diagnostics&lt;/h3&gt;&lt;pre&gt;ping -c 4 8.8.8.8&lt;br&gt;traceroute 8.8.8.8&lt;br&gt;nslookup google.com&lt;br&gt;dig google.com&lt;/pre&gt;&lt;h3&gt;Ports ouverts&lt;/h3&gt;&lt;pre&gt;ss -tuln           # Ports en écoute&lt;br&gt;ss -tunp           # Avec processus&lt;br&gt;nmap -sV 192.168.1.0/24  # Scanner réseau&lt;/pre&gt;&lt;h3&gt;Capture de paquets&lt;/h3&gt;&lt;pre&gt;tcpdump -i eth0 -n&lt;br&gt;tcpdump -i eth0 port 80&lt;/pre&gt;">
+      <div class="res-card__icon">📡</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Réseau</span>
+        <h3 class="res-card__title">Commandes réseau utiles</h3>
+        <p class="res-card__desc">Diagnostic, interfaces, ports et capture de paquets</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
-    <button class="res-card" data-cat="web" data-title="Installation Apache2"
-      data-content="&lt;h2&gt;Installation Apache2&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Docker&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Installation&lt;/h3&gt;&lt;pre&gt;apt install apache2 -y&lt;br&gt;systemctl enable apache2&lt;/pre&gt;&lt;h3&gt;Dossiers&lt;/h3&gt;&lt;pre&gt;/etc/apache2/     → config&lt;br&gt;/var/www/html/    → racine web&lt;/pre&gt;&lt;h3&gt;VirtualHost&lt;/h3&gt;&lt;pre&gt;&amp;lt;VirtualHost *:80&amp;gt;&lt;br&gt;  ServerName monsite.local&lt;br&gt;  DocumentRoot /var/www/monsite&lt;br&gt;&amp;lt;/VirtualHost&amp;gt;&lt;/pre&gt;&lt;h3&gt;Activer&lt;/h3&gt;&lt;pre&gt;a2ensite monsite.conf &amp;amp;&amp;amp; systemctl reload apache2&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Docker</span><h3 class="res-card__title">Installation Apache2</h3><p class="res-card__desc">Déployer et configurer Apache2</p></div>
+    <!-- ══ DOCKER ══ -->
+    <button class="res-card" data-cat="docker" data-title="Docker — bases et commandes"
+      data-content="&lt;h2&gt;Docker — bases et commandes&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Docker&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Installation Docker sur Debian&lt;/h3&gt;&lt;pre&gt;apt update&lt;br&gt;apt install ca-certificates curl gnupg -y&lt;br&gt;install -m 0755 -d /etc/apt/keyrings&lt;br&gt;curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg&lt;br&gt;echo &quot;deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian $(. /etc/os-release &amp;amp;&amp;amp; echo $VERSION_CODENAME) stable&quot; | tee /etc/apt/sources.list.d/docker.list&lt;br&gt;apt update&lt;br&gt;apt install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y&lt;br&gt;systemctl enable docker &amp;amp;&amp;amp; systemctl start docker&lt;br&gt;usermod -aG docker $USER&lt;/pre&gt;&lt;h3&gt;Commandes essentielles&lt;/h3&gt;&lt;pre&gt;docker ps                    # Containers actifs&lt;br&gt;docker ps -a                 # Tous les containers&lt;br&gt;docker images                # Images locales&lt;br&gt;docker pull nginx:latest     # Télécharger une image&lt;br&gt;docker run -d -p 80:80 --name monsite nginx&lt;br&gt;docker stop monsite&lt;br&gt;docker rm monsite&lt;br&gt;docker logs monsite&lt;br&gt;docker exec -it monsite bash&lt;/pre&gt;&lt;h3&gt;Docker Compose&lt;/h3&gt;&lt;pre&gt;docker compose up -d&lt;br&gt;docker compose down&lt;br&gt;docker compose ps&lt;br&gt;docker compose logs -f&lt;/pre&gt;&lt;h3&gt;Volumes et réseau&lt;/h3&gt;&lt;pre&gt;docker volume ls&lt;br&gt;docker volume create monvol&lt;br&gt;docker network ls&lt;br&gt;docker network create monreseau&lt;/pre&gt;">
+      <div class="res-card__icon">🐳</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Docker</span>
+        <h3 class="res-card__title">Docker — bases et commandes</h3>
+        <p class="res-card__desc">Installation, commandes essentielles, volumes et réseaux Docker</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
-    <button class="res-card" data-cat="web" data-title="Docker"
-      data-content="&lt;h2&gt;Docker&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Docker&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Installation&lt;/h3&gt;&lt;pre&gt;apt install docker.io -y&lt;br&gt;systemctl enable docker&lt;br&gt;usermod -aG docker monuser&lt;/pre&gt;&lt;h3&gt;Commandes essentielles&lt;/h3&gt;&lt;pre&gt;docker pull image:tag&lt;br&gt;docker run -d -p 80:80 --name monc image&lt;br&gt;docker ps &amp;amp;&amp;amp; docker stop monc&lt;/pre&gt;&lt;h3&gt;Docker Compose&lt;/h3&gt;&lt;pre&gt;docker-compose up -d&lt;br&gt;docker-compose down&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Docker</span><h3 class="res-card__title">Docker</h3><p class="res-card__desc">Conteneurisation et commandes Docker</p></div>
+    <button class="res-card" data-cat="docker" data-title="Docker WordPress + MySQL — Docker Compose"
+      data-content="&lt;h2&gt;Docker WordPress + MySQL — Docker Compose&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Docker&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Architecture&lt;/h3&gt;&lt;p&gt;Deux containers séparés dans deux dossiers distincts, interconnectés via un réseau Docker &lt;strong&gt;external&lt;/strong&gt; nommé wp_network.&lt;/p&gt;&lt;pre&gt;projet/&lt;br&gt;├── mysql/&lt;br&gt;│   └── docker-compose.yml&lt;br&gt;└── wordpress/&lt;br&gt;    └── docker-compose.yml&lt;/pre&gt;&lt;h3&gt;Étape 1 — Créer le réseau partagé&lt;/h3&gt;&lt;pre&gt;docker network create wp_network&lt;/pre&gt;&lt;h3&gt;Étape 2 — docker-compose.yml MySQL&lt;/h3&gt;&lt;pre&gt;services:&lt;br&gt;  mysql:&lt;br&gt;    image: mysql:8.0&lt;br&gt;    container_name: mysql_wp&lt;br&gt;    restart: always&lt;br&gt;    environment:&lt;br&gt;      MYSQL_ROOT_PASSWORD: rootpassword&lt;br&gt;      MYSQL_DATABASE: wordpress&lt;br&gt;      MYSQL_USER: wpuser&lt;br&gt;      MYSQL_PASSWORD: wppassword&lt;br&gt;    volumes:&lt;br&gt;      - mysql_data:/var/lib/mysql&lt;br&gt;    networks:&lt;br&gt;      - wp_network&lt;br&gt;volumes:&lt;br&gt;  mysql_data:&lt;br&gt;networks:&lt;br&gt;  wp_network:&lt;br&gt;    external: true&lt;/pre&gt;&lt;h3&gt;Étape 3 — docker-compose.yml WordPress&lt;/h3&gt;&lt;pre&gt;services:&lt;br&gt;  wordpress:&lt;br&gt;    image: wordpress:latest&lt;br&gt;    container_name: wordpress_app&lt;br&gt;    restart: always&lt;br&gt;    ports:&lt;br&gt;      - &quot;8080:80&quot;&lt;br&gt;    environment:&lt;br&gt;      WORDPRESS_DB_HOST: mysql_wp:3306&lt;br&gt;      WORDPRESS_DB_NAME: wordpress&lt;br&gt;      WORDPRESS_DB_USER: wpuser&lt;br&gt;      WORDPRESS_DB_PASSWORD: wppassword&lt;br&gt;    volumes:&lt;br&gt;      - wordpress_data:/var/www/html&lt;br&gt;    networks:&lt;br&gt;      - wp_network&lt;br&gt;volumes:&lt;br&gt;  wordpress_data:&lt;br&gt;networks:&lt;br&gt;  wp_network:&lt;br&gt;    external: true&lt;/pre&gt;&lt;h3&gt;Étape 4 — Démarrage&lt;/h3&gt;&lt;pre&gt;# 1. D'abord MySQL :&lt;br&gt;cd mysql/ &amp;amp;&amp;amp; docker compose up -d&lt;br&gt;# 2. Ensuite WordPress :&lt;br&gt;cd ../wordpress/ &amp;amp;&amp;amp; docker compose up -d&lt;br&gt;# 3. Vérifier :&lt;br&gt;docker ps&lt;/pre&gt;&lt;h3&gt;Accès&lt;/h3&gt;&lt;pre&gt;http://localhost:8080&lt;br&gt;# Suivre l'assistant WordPress — DB déjà configurée&lt;/pre&gt;">
+      <div class="res-card__icon">🗃️</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Docker</span>
+        <h3 class="res-card__title">Docker WordPress + MySQL</h3>
+        <p class="res-card__desc">Deux Docker Compose séparés interconnectés via un réseau externe partagé</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
+    <button class="res-card" data-cat="docker" data-title="Apache2 + Docker Compose + SSH GitHub"
+      data-content="&lt;h2&gt;Apache2 + Docker Compose + Déploiement via GitHub SSH&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Docker / Services&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Architecture&lt;/h3&gt;&lt;p&gt;Apache2 dans un container Docker, le site est cloné depuis GitHub via SSH et monté comme volume.&lt;/p&gt;&lt;h3&gt;Étape 1 — Clé SSH de la VM vers GitHub&lt;/h3&gt;&lt;pre&gt;ssh-keygen -t ed25519 -C &quot;deploy@monserveur&quot;&lt;br&gt;cat ~/.ssh/id_ed25519.pub&lt;br&gt;# Copier cette clé dans GitHub → Settings → SSH keys&lt;br&gt;ssh -T git@github.com   # Tester la connexion&lt;/pre&gt;&lt;h3&gt;Étape 2 — Cloner le dépôt sur la VM&lt;/h3&gt;&lt;pre&gt;cd /opt&lt;br&gt;git clone git@github.com:VotreUser/votre-repo.git monsite&lt;/pre&gt;&lt;h3&gt;Étape 3 — docker-compose.yml Apache2&lt;/h3&gt;&lt;pre&gt;services:&lt;br&gt;  apache:&lt;br&gt;    image: httpd:2.4&lt;br&gt;    container_name: apache_site&lt;br&gt;    restart: always&lt;br&gt;    ports:&lt;br&gt;      - &quot;80:80&quot;&lt;br&gt;    volumes:&lt;br&gt;      - /opt/monsite:/usr/local/apache2/htdocs/&lt;br&gt;    environment:&lt;br&gt;      - TZ=Europe/Paris&lt;/pre&gt;&lt;h3&gt;Étape 4 — Démarrer&lt;/h3&gt;&lt;pre&gt;docker compose up -d&lt;br&gt;docker logs apache_site&lt;/pre&gt;&lt;h3&gt;Étape 5 — Déployer les mises à jour&lt;/h3&gt;&lt;pre&gt;cd /opt/monsite&lt;br&gt;git pull origin main&lt;br&gt;# Apache sert automatiquement les nouveaux fichiers&lt;/pre&gt;&lt;h3&gt;Commandes Git de déploiement&lt;/h3&gt;&lt;pre&gt;git status              # État&lt;br&gt;git pull origin main    # Récupérer MAJ&lt;br&gt;git log --oneline -5    # Derniers commits&lt;br&gt;git diff                # Voir changements&lt;/pre&gt;">
+      <div class="res-card__icon">🚀</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Docker</span>
+        <h3 class="res-card__title">Apache2 + Docker + GitHub SSH</h3>
+        <p class="res-card__desc">Héberger un site avec Apache2 en Docker, déploiement via clé SSH GitHub</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+
+    <!-- ══ SERVICES WEB ══ -->
+    <button class="res-card" data-cat="services" data-title="Installation Apache2"
+      data-content="&lt;h2&gt;Installation Apache2&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Services&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Installation&lt;/h3&gt;&lt;pre&gt;apt install apache2 -y&lt;br&gt;systemctl enable apache2&lt;br&gt;systemctl start apache2&lt;/pre&gt;&lt;h3&gt;Structure des dossiers&lt;/h3&gt;&lt;pre&gt;/etc/apache2/                → configuration principale&lt;br&gt;/etc/apache2/sites-available/ → sites disponibles&lt;br&gt;/etc/apache2/sites-enabled/   → sites actifs&lt;br&gt;/var/www/html/               → racine web par défaut&lt;/pre&gt;&lt;h3&gt;Créer un VirtualHost&lt;/h3&gt;&lt;pre&gt;&amp;lt;VirtualHost *:80&amp;gt;&lt;br&gt;    ServerName monsite.local&lt;br&gt;    DocumentRoot /var/www/monsite&lt;br&gt;    ErrorLog ${APACHE_LOG_DIR}/monsite_error.log&lt;br&gt;    &amp;lt;Directory /var/www/monsite&amp;gt;&lt;br&gt;        Options Indexes FollowSymLinks&lt;br&gt;        AllowOverride All&lt;br&gt;        Require all granted&lt;br&gt;    &amp;lt;/Directory&amp;gt;&lt;br&gt;&amp;lt;/VirtualHost&amp;gt;&lt;/pre&gt;&lt;h3&gt;Activer le site&lt;/h3&gt;&lt;pre&gt;mkdir -p /var/www/monsite&lt;br&gt;a2ensite monsite.conf&lt;br&gt;a2dissite 000-default.conf&lt;br&gt;systemctl reload apache2&lt;/pre&gt;&lt;h3&gt;Modules utiles&lt;/h3&gt;&lt;pre&gt;a2enmod rewrite    # URL rewriting&lt;br&gt;a2enmod ssl        # HTTPS&lt;br&gt;a2enmod headers    # Headers HTTP&lt;br&gt;systemctl restart apache2&lt;/pre&gt;">
+      <div class="res-card__icon">🖥️</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Services Web</span>
+        <h3 class="res-card__title">Installation Apache2</h3>
+        <p class="res-card__desc">Installation, VirtualHost et modules Apache2 sous Debian</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+
+    <!-- ══ BASE DE DONNÉES ══ -->
     <button class="res-card" data-cat="bdd" data-title="Installation MySQL"
-      data-content="&lt;h2&gt;Installation MySQL&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Base de données&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Installation&lt;/h3&gt;&lt;pre&gt;apt install mysql-server -y&lt;br&gt;mysql_secure_installation&lt;/pre&gt;&lt;h3&gt;Connexion&lt;/h3&gt;&lt;pre&gt;mysql -u root -p&lt;/pre&gt;&lt;h3&gt;Commandes SQL&lt;/h3&gt;&lt;pre&gt;SHOW DATABASES;&lt;br&gt;CREATE DATABASE mabase;&lt;br&gt;USE mabase;&lt;br&gt;SHOW TABLES;&lt;/pre&gt;&lt;h3&gt;Créer un utilisateur&lt;/h3&gt;&lt;pre&gt;CREATE USER 'user'@'localhost' IDENTIFIED BY 'mdp';&lt;br&gt;GRANT ALL PRIVILEGES ON mabase.* TO 'user'@'localhost';&lt;br&gt;FLUSH PRIVILEGES;&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Base de données</span><h3 class="res-card__title">Installation MySQL</h3><p class="res-card__desc">Installer et configurer MySQL</p></div>
+      data-content="&lt;h2&gt;Installation MySQL&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Base de données&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Installation&lt;/h3&gt;&lt;pre&gt;apt install mysql-server -y&lt;br&gt;systemctl enable mysql&lt;br&gt;systemctl start mysql&lt;br&gt;mysql_secure_installation&lt;/pre&gt;&lt;h3&gt;Connexion root&lt;/h3&gt;&lt;pre&gt;mysql -u root -p&lt;/pre&gt;&lt;h3&gt;Commandes SQL essentielles&lt;/h3&gt;&lt;pre&gt;SHOW DATABASES;&lt;br&gt;CREATE DATABASE mabase CHARACTER SET utf8mb4;&lt;br&gt;USE mabase;&lt;br&gt;SHOW TABLES;&lt;br&gt;DESCRIBE matable;&lt;/pre&gt;&lt;h3&gt;Gestion des utilisateurs&lt;/h3&gt;&lt;pre&gt;CREATE USER 'monuser'@'localhost' IDENTIFIED BY 'motdepasse';&lt;br&gt;GRANT ALL PRIVILEGES ON mabase.* TO 'monuser'@'localhost';&lt;br&gt;FLUSH PRIVILEGES;&lt;br&gt;SHOW GRANTS FOR 'monuser'@'localhost';&lt;/pre&gt;&lt;h3&gt;Import / Export&lt;/h3&gt;&lt;pre&gt;mysqldump -u root -p mabase &gt; sauvegarde.sql&lt;br&gt;mysql -u root -p mabase &lt; sauvegarde.sql&lt;/pre&gt;">
+      <div class="res-card__icon">🗄️</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Base de données</span>
+        <h3 class="res-card__title">Installation MySQL</h3>
+        <p class="res-card__desc">Installation, configuration et commandes SQL essentielles</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
+    <!-- ══ OUTILS ══ -->
     <button class="res-card" data-cat="outils" data-title="Git — commandes essentielles"
-      data-content="&lt;h2&gt;Git — commandes essentielles&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Outils&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Configuration&lt;/h3&gt;&lt;pre&gt;git config --global user.name 'Prénom Nom'&lt;br&gt;git config --global user.email 'mail@exemple.com'&lt;/pre&gt;&lt;h3&gt;Workflow&lt;/h3&gt;&lt;pre&gt;git status&lt;br&gt;git add .&lt;br&gt;git commit -m 'message'&lt;br&gt;git push origin main&lt;/pre&gt;&lt;h3&gt;Branches&lt;/h3&gt;&lt;pre&gt;git branch ma-branche&lt;br&gt;git checkout ma-branche&lt;br&gt;git merge ma-branche&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Outils</span><h3 class="res-card__title">Git — commandes essentielles</h3><p class="res-card__desc">Versioning, branches et workflow Git</p></div>
+      data-content="&lt;h2&gt;Git — commandes essentielles&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Outils&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Configuration initiale&lt;/h3&gt;&lt;pre&gt;git config --global user.name &quot;Prénom Nom&quot;&lt;br&gt;git config --global user.email &quot;email@exemple.com&quot;&lt;br&gt;git config --global init.defaultBranch main&lt;/pre&gt;&lt;h3&gt;Initialiser un dépôt&lt;/h3&gt;&lt;pre&gt;git init&lt;br&gt;git remote add origin git@github.com:user/repo.git&lt;/pre&gt;&lt;h3&gt;Workflow quotidien&lt;/h3&gt;&lt;pre&gt;git status&lt;br&gt;git add .&lt;br&gt;git commit -m &quot;Description du commit&quot;&lt;br&gt;git push origin main&lt;/pre&gt;&lt;h3&gt;Récupérer les modifications&lt;/h3&gt;&lt;pre&gt;git pull origin main&lt;br&gt;git fetch origin&lt;/pre&gt;&lt;h3&gt;Branches&lt;/h3&gt;&lt;pre&gt;git branch                    # Lister&lt;br&gt;git checkout -b nouvelle      # Créer + basculer&lt;br&gt;git merge ma-branche          # Fusionner&lt;br&gt;git branch -d ma-branche      # Supprimer&lt;/pre&gt;&lt;h3&gt;Clé SSH pour GitHub&lt;/h3&gt;&lt;pre&gt;ssh-keygen -t ed25519 -C &quot;email@exemple.com&quot;&lt;br&gt;cat ~/.ssh/id_ed25519.pub     # Copier dans GitHub&lt;br&gt;ssh -T git@github.com         # Tester&lt;/pre&gt;">
+      <div class="res-card__icon">⚙️</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Outils</span>
+        <h3 class="res-card__title">Git — commandes essentielles</h3>
+        <p class="res-card__desc">Workflow Git, branches, et clé SSH pour GitHub</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
     <button class="res-card" data-cat="outils" data-title="VirtualBox — créer une VM"
-      data-content="&lt;h2&gt;VirtualBox — créer une VM&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Outils&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Création&lt;/h3&gt;&lt;ol&gt;&lt;li&gt;Cliquer sur Nouvelle&lt;/li&gt;&lt;li&gt;Choisir Linux/Debian&lt;/li&gt;&lt;li&gt;Allouer 1 Go RAM minimum&lt;/li&gt;&lt;li&gt;Créer un disque VDI de 20 Go&lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;Modes réseau&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;NAT&lt;/strong&gt; : Internet depuis la VM&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Réseau interne&lt;/strong&gt; : entre VMs&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Pont&lt;/strong&gt; : VM sur réseau local&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Raccourcis&lt;/h3&gt;&lt;pre&gt;Ctrl+F  → Plein écran&lt;br&gt;Ctrl+S  → Snapshot&lt;/pre&gt;">
-      <div class="res-card__body"><span class="res-card__cat">Outils</span><h3 class="res-card__title">VirtualBox — créer une VM</h3><p class="res-card__desc">Créer et configurer une machine virtuelle</p></div>
+      data-content="&lt;h2&gt;VirtualBox — créer une VM&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;Catégorie :&lt;/strong&gt; Outils&lt;/p&gt;&lt;hr&gt;&lt;h3&gt;Création&lt;/h3&gt;&lt;ol&gt;&lt;li&gt;Nouveau → Nom et OS → Linux / Debian 64-bit&lt;/li&gt;&lt;li&gt;RAM : 2048 Mo minimum&lt;/li&gt;&lt;li&gt;Disque dur : VDI, dynamique, 20 Go&lt;/li&gt;&lt;/ol&gt;&lt;h3&gt;Configuration réseau&lt;/h3&gt;&lt;ul&gt;&lt;li&gt;&lt;strong&gt;NAT&lt;/strong&gt; : accès Internet depuis la VM uniquement&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Réseau interne&lt;/strong&gt; : communication entre VMs&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Pont (Bridged)&lt;/strong&gt; : VM visible sur le réseau local&lt;/li&gt;&lt;li&gt;&lt;strong&gt;Hôte uniquement&lt;/strong&gt; : VM ↔ machine hôte uniquement&lt;/li&gt;&lt;/ul&gt;&lt;h3&gt;Raccourcis VirtualBox&lt;/h3&gt;&lt;pre&gt;Ctrl Droit + F   → Plein écran&lt;br&gt;Ctrl Droit + S   → Snapshot&lt;br&gt;Ctrl Droit + Del → Ctrl+Alt+Suppr&lt;/pre&gt;">
+      <div class="res-card__icon">📦</div>
+      <div class="res-card__body">
+        <span class="res-card__cat">Outils</span>
+        <h3 class="res-card__title">VirtualBox — créer une VM</h3>
+        <p class="res-card__desc">Créer et configurer une machine virtuelle sous VirtualBox</p>
+      </div>
+      <svg class="res-card__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </button>
 
   </div>
@@ -167,205 +224,97 @@
 </footer>
 </div>
 
-<!-- ══ POPUP CATÉGORIE (full screen, liste toutes les procédures) ══ -->
-<div class="overlay" id="catOverlay"></div>
-<div class="cat-popup" id="catPopup" role="dialog" aria-modal="true">
-  <div class="cat-popup__box">
-    <div class="cat-popup__header">
-      <div>
-        <p class="cat-popup__label" id="catPopupLabel"></p>
-        <h2 class="cat-popup__title" id="catPopupTitle"></h2>
-      </div>
-      <button class="popup__close" id="catPopupClose" aria-label="Fermer">
+<!-- Panel procédure -->
+<div class="overlay" id="resOverlay"></div>
+<aside class="res-panel" id="resPanel" role="dialog" aria-modal="true" aria-label="Procédure">
+  <div class="res-panel__header">
+    <h2 class="res-panel__title" id="resPanelTitle"></h2>
+    <div style="display:flex;gap:.4rem;align-items:center;">
+      <button class="popup__close" id="resPanelExpand" aria-label="Agrandir" title="Agrandir">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+      </button>
+      <button class="popup__close" id="resPanelClose" aria-label="Fermer">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
     </div>
-    <!-- Liste des procédures de la catégorie -->
-    <div class="cat-popup__list" id="catPopupList"></div>
   </div>
-</div>
-
-<!-- ══ POPUP PROCÉDURE (par-dessus la popup catégorie) ══ -->
-<div class="overlay-proc" id="procOverlay"></div>
-<div class="proc-popup" id="procPopup" role="dialog" aria-modal="true">
-  <div class="proc-popup__box">
-    <div class="proc-popup__header">
-      <h3 class="proc-popup__title" id="procPopupTitle"></h3>
-      <div style="display:flex;gap:.4rem;align-items:center;">
-        <!-- Bouton modifier admin (visible seulement si connecté) -->
-        <button class="popup__close admin-edit-btn" id="procEditBtn" style="display:none" title="Modifier (admin)">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-        </button>
-        <button class="popup__close" id="procPopupClose" aria-label="Fermer">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
-        </button>
-      </div>
-    </div>
-    <div class="proc-popup__body" id="procPopupBody"></div>
-  </div>
-</div>
+  <div class="res-panel__body" id="resPanelBody"></div>
+</aside>
 
 <script>
 document.getElementById('year').textContent = new Date().getFullYear();
 
-const AUTH_KEY = 'admin_auth_py';
-const isAdmin  = () => sessionStorage.getItem(AUTH_KEY) === '1';
+const cards      = document.querySelectorAll('.res-card');
+const filters    = document.querySelectorAll('.res-filter');
+const search     = document.getElementById('resSearch');
+const noResult   = document.getElementById('resNoResult');
+const querySpan  = document.getElementById('resQuery');
+const overlay    = document.getElementById('resOverlay');
+const panel      = document.getElementById('resPanel');
+const panelTitle = document.getElementById('resPanelTitle');
+const panelBody  = document.getElementById('resPanelBody');
+const panelClose = document.getElementById('resPanelClose');
+const panelExpand= document.getElementById('resPanelExpand');
 
-/* ── Toutes les cartes (source de données) ── */
-const cards = [...document.querySelectorAll('.res-card')];
+let isExpanded = false;
 
-/* ── Compteurs par catégorie ── */
-['systeme','reseau','web','bdd','outils'].forEach(cat => {
-  const n = cards.filter(c => c.dataset.cat === cat).length;
-  const el = document.getElementById('cnt-' + cat);
-  if (el) el.textContent = n;
-});
-
-/* ══════════════════════════════
-   POPUP CATÉGORIE
-══════════════════════════════ */
-const catOverlay   = document.getElementById('catOverlay');
-const catPopup     = document.getElementById('catPopup');
-const catPopupClose= document.getElementById('catPopupClose');
-const catPopupTitle= document.getElementById('catPopupTitle');
-const catPopupLabel= document.getElementById('catPopupLabel');
-const catPopupList = document.getElementById('catPopupList');
-
-const CAT_META = {
-  systeme: { title: 'Système',         icon: '🐧', label: 'BTS SIO · Système' },
-  reseau:  { title: 'Réseau',          icon: '🌐', label: 'BTS SIO · Réseau' },
-  web:     { title: 'Docker',          icon: '🐳', label: 'BTS SIO · Docker' },
-  bdd:     { title: 'Base de données', icon: '🗄️', label: 'BTS SIO · BDD' },
-  outils:  { title: 'Outils',          icon: '⚙️', label: 'BTS SIO · Outils' },
-};
-
-function openCatPopup(cat) {
-  const meta = CAT_META[cat] || {};
-  catPopupTitle.textContent = meta.title || cat;
-  catPopupLabel.textContent = meta.label || '';
-
-  const catCards = cards.filter(c => c.dataset.cat === cat);
-  catPopupList.innerHTML = catCards.map(c => `
-    <button class="proc-item" data-title="${c.dataset.title}" data-content="${c.dataset.content.replace(/"/g,'&quot;')}">
-      <div class="proc-item__left">
-        <span class="proc-item__title">${c.dataset.title}</span>
-        <span class="proc-item__desc">${c.querySelector('.res-card__desc')?.textContent || ''}</span>
-      </div>
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:1rem;height:1rem;flex-shrink:0;color:var(--text-dim)"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </button>
-  `).join('');
-
-  /* Ouvrir la procédure au clic sur un item */
-  catPopupList.querySelectorAll('.proc-item').forEach(btn => {
-    btn.addEventListener('click', () => openProcPopup(btn.dataset.title, btn.dataset.content));
-  });
-
-  catOverlay.classList.add('is-visible');
-  catPopup.classList.add('is-open');
+function openPanel(title, content) {
+  panelTitle.textContent = title;
+  panelBody.innerHTML    = content;
+  overlay.classList.add('is-visible');
+  panel.classList.add('is-open');
+  if (isExpanded) panel.classList.add('is-expanded');
   document.body.style.overflow = 'hidden';
 }
-
-function closeCatPopup() {
-  catOverlay.classList.remove('is-visible');
-  catPopup.classList.remove('is-open');
-  closeProcPopup();
+function closePanel() {
+  overlay.classList.remove('is-visible');
+  panel.classList.remove('is-open');
   document.body.style.overflow = '';
 }
 
-catPopupClose.addEventListener('click', closeCatPopup);
-catOverlay.addEventListener('click', closeCatPopup);
+panelClose.addEventListener('click', closePanel);
+overlay.addEventListener('click', closePanel);
 
-/* Clic sur les grandes cartes catégories */
-document.querySelectorAll('.cat-card').forEach(card => {
-  card.addEventListener('click', () => openCatPopup(card.dataset.cat));
+panelExpand.addEventListener('click', () => {
+  isExpanded = !isExpanded;
+  panel.classList.toggle('is-expanded', isExpanded);
+  panelExpand.title = isExpanded ? 'Réduire' : 'Agrandir';
+  panelExpand.innerHTML = isExpanded
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>`;
 });
 
-/* ══════════════════════════════
-   POPUP PROCÉDURE
-══════════════════════════════ */
-const procOverlay   = document.getElementById('procOverlay');
-const procPopup     = document.getElementById('procPopup');
-const procPopupClose= document.getElementById('procPopupClose');
-const procPopupTitle= document.getElementById('procPopupTitle');
-const procPopupBody = document.getElementById('procPopupBody');
-const procEditBtn   = document.getElementById('procEditBtn');
+cards.forEach(c => c.addEventListener('click', () => openPanel(c.dataset.title, c.dataset.content)));
 
-let currentProcTitle   = '';
-let currentProcContent = '';
-
-function openProcPopup(title, content) {
-  currentProcTitle   = title;
-  currentProcContent = content;
-  procPopupTitle.textContent = title;
-  procPopupBody.innerHTML    = content;
-  procEditBtn.style.display  = isAdmin() ? 'flex' : 'none';
-  procOverlay.classList.add('is-visible');
-  procPopup.classList.add('is-open');
-}
-
-function closeProcPopup() {
-  procOverlay.classList.remove('is-visible');
-  procPopup.classList.remove('is-open');
-}
-
-procPopupClose.addEventListener('click', closeProcPopup);
-procOverlay.addEventListener('click', closeProcPopup);
-
-/* Bouton modifier admin → redirige vers admin.html avec données pré-remplies */
-procEditBtn.addEventListener('click', () => {
-  const card = cards.find(c => c.dataset.title === currentProcTitle);
-  if (!card) return;
-  const params = new URLSearchParams({
-    edit: 'proc',
-    title:   currentProcTitle,
-    cat:     card.dataset.cat,
-    desc:    card.querySelector('.res-card__desc')?.textContent || '',
-    content: currentProcContent,
+let activeCat = 'all';
+filters.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filters.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat;
+    applyFilters();
   });
-  window.open('../admin.html?' + params.toString(), '_blank');
 });
 
-/* ══════════════════════════════
-   RECHERCHE
-══════════════════════════════ */
-const search   = document.getElementById('resSearch');
-const resGrid  = document.getElementById('resGrid');
-const catGrid  = document.getElementById('catGrid');
-const noResult = document.getElementById('resNoResult');
-const querySpan= document.getElementById('resQuery');
-
-search.addEventListener('input', () => {
-  const q = search.value.trim().toLowerCase();
-  if (!q) {
-    resGrid.style.display = 'none';
-    catGrid.style.display = 'grid';
-    noResult.style.display = 'none';
-    return;
-  }
-  catGrid.style.display = 'none';
-  resGrid.style.display = 'grid';
-  let n = 0;
-  cards.forEach(c => {
-    const match = c.dataset.title.toLowerCase().includes(q)
-      || (c.querySelector('.res-card__desc')?.textContent.toLowerCase().includes(q));
-    c.style.display = match ? '' : 'none';
-    if (match) {
-      n++;
-      c.onclick = () => openProcPopup(c.dataset.title, c.dataset.content);
-    }
-  });
-  noResult.style.display = n === 0 ? 'block' : 'none';
-  querySpan.textContent  = q;
-});
-
+search.addEventListener('input', applyFilters);
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); search.focus(); }
-  if (e.key === 'Escape') {
-    if (procPopup.classList.contains('is-open')) closeProcPopup();
-    else if (catPopup.classList.contains('is-open')) closeCatPopup();
-    else search.value = '' || search.dispatchEvent(new Event('input'));
-  }
+  if (e.key === 'Escape') closePanel();
 });
+
+function applyFilters() {
+  const q = search.value.trim().toLowerCase();
+  let n = 0;
+  cards.forEach(c => {
+    const matchCat    = activeCat === 'all' || c.dataset.cat === activeCat;
+    const matchSearch = !q || c.dataset.title.toLowerCase().includes(q) || c.querySelector('.res-card__desc').textContent.toLowerCase().includes(q);
+    const visible = matchCat && matchSearch;
+    c.style.display = visible ? '' : 'none';
+    if (visible) n++;
+  });
+  noResult.style.display = n === 0 ? 'block' : 'none';
+  querySpan.textContent  = q || activeCat;
+}
 </script>
 <script src="../js/shared.js"></script>
 </body>

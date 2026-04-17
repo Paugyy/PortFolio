@@ -1,68 +1,154 @@
 [
   {
     "id": "p1",
-    "title": "Déploiement SiteWeb Wordpress avec MySQL",
+    "title": "Déploiement WordPress + MySQL avec Docker",
     "category": "ecole",
-    "date": "2026-02-25",
-    "stack": "Docker • Wordpress • MySQL",
-    "summary": "Déploiement d'un SiteWeb Wordpress avec sa propre Base de Données.",
-    "context": "Dans le cadre de mon stage, j'ai dû déployer une infrastructure réseau complète pour un service interne.",
-    "objectifs": "Virtualiser les serveurs, configurer le réseau interne et exposer un service web.",
-    "etapes": "Création des VMs sous VirtualBox, installation de Debian 12, configuration SSH, déploiement Apache2 avec VirtualHost.",
-    "difficultes": "Gestion des conflits d'adresses IP et configuration du NAT pour l'accès Internet.",
-    "resultat": "Infrastructure opérationnelle avec 3 serveurs virtualisés et un service web accessible en interne.",
+    "date": "2026-02-01",
+    "stack": "Docker • Docker Compose • WordPress • MySQL • Réseau Network",
+    "summary": "Déploiement de deux containers Docker interconnectés : WordPress et MySQL, communiquant via un réseau interne Docker.",
+    "context": "Dans le cadre du BTS SIO, nous avons eu pour mission de déployer un site web WordPress fonctionnel en utilisant Docker et Docker Compose. L'originalité du projet résidait dans le fait de séparer les services : WordPress dans un container, MySQL dans un autre — chacun isolé, mais devant communiquer ensemble via un réseau interne Docker (network bridge).",
+    "objectifs": "Déployer WordPress et MySQL dans deux containers Docker distincts. Interconnecter les deux containers via un réseau Docker interne commun. Automatiser la création de la base de données WordPress au démarrage du container MySQL. Rendre le site accessible depuis un navigateur via l'adresse IP et le port exposé.",
+    "etapes": "1. Installation de Docker Desktop sur Windows. 2. Création d'un dossier mysql/ contenant le fichier docker-compose.yml configuré avec les variables d'environnement (MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD, MYSQL_ROOT_PASSWORD) et la déclaration du network partagé. 3. Création d'un dossier wordpress/ contenant son propre docker-compose.yml pointant vers la base MySQL avec les mêmes credentials, et rejoignant le même network Docker. 4. Démarrage du container MySQL en premier avec 'docker compose up -d' depuis le dossier mysql/. 5. Démarrage du container WordPress depuis le dossier wordpress/. 6. Vérification que les deux containers sont UP avec 'docker ps'. 7. Accès au site WordPress via http://localhost:8080 et finalisation de l'installation.",
+    "difficultes": "La principale difficulté était d'interconnecter les deux containers sur le même réseau Docker alors qu'ils sont définis dans deux fichiers docker-compose.yml séparés. Il fallait déclarer le network comme 'external: true' dans le fichier WordPress, et le créer dans le fichier MySQL. La création automatique de la base de données a également nécessité de bien configurer les variables d'environnement MYSQL_DATABASE.",
+    "resultat": "Infrastructure opérationnelle avec deux containers Docker indépendants mais interconnectés. Le site WordPress est accessible et communique correctement avec la base de données MySQL. La base de données est créée automatiquement au démarrage sans intervention manuelle.",
     "procedures": [
-      { "titre": "Docker", "cat": "Web" },
+      { "titre": "Docker WordPress + MySQL — Docker Compose", "cat": "Docker" },
+      { "titre": "Docker — bases et commandes", "cat": "Docker" },
       { "titre": "Installation MySQL", "cat": "Base de données" }
     ]
   },
   {
     "id": "p2",
-    "title": "Site portfolio BTS SIO",
+    "title": "Déploiement d'un site web sur VM Debian + Apache2",
     "category": "ecole",
-    "date": "2026-02-20",
-    "stack": "HTML • CSS • JavaScript • GitHub Pages",
-    "summary": "Conception et développement de mon portfolio en ligne pour le BTS SIO.",
-    "context": "Projet personnel encadré par l'école pour valoriser les réalisations du BTS.",
-    "objectifs": "Créer un portfolio responsive, sobre et professionnel hébergé sur GitHub Pages.",
-    "etapes": "Maquettage, intégration HTML/CSS, création des pages dynamiques via JavaScript et JSON.",
-    "difficultes": "Gestion du routing relatif sur GitHub Pages et adaptation mobile.",
-    "resultat": "Portfolio en ligne consultable, avec pages profil, projets, ressources et contact.",
+    "date": "2026-03-01",
+    "stack": "Proxmox • Debian 12 • Apache2 • HTML • CSS • SSH • Git • GitHub",
+    "summary": "Hébergement d'un site web sur une VM Debian via Apache2, avec connexion SSH depuis Windows et déploiement via GitHub.",
+    "context": "Dans le cadre du BTS SIO, nous devions héberger un site web statique sur une machine virtuelle Debian tournant sous Proxmox. Le projet consistait à configurer Apache2 comme serveur web, à établir une connexion SSH sécurisée depuis Windows vers la VM, et à déployer le site en utilisant Git et GitHub pour gérer le code source.",
+    "objectifs": "Créer et configurer une VM Debian sous Proxmox. Installer et configurer Apache2 pour héberger un site web. Mettre en place une connexion SSH sécurisée par clé depuis Windows vers la VM. Cloner le dépôt GitHub sur la VM et déployer le site automatiquement via Git.",
+    "etapes": "1. Création de la VM Debian 12 sous Proxmox avec les ressources minimales (2 vCPU, 2 Go RAM, 20 Go disque). 2. Installation et configuration réseau de Debian (IP statique). 3. Installation d'Apache2 sur la VM. 4. Génération d'une paire de clés SSH sur Windows (ssh-keygen) et copie de la clé publique sur la VM. 5. Connexion SSH depuis Windows (PowerShell) vers la VM sans mot de passe. 6. Installation de Git sur la VM. 7. Ajout de la clé SSH de la VM dans GitHub (Deploy Key). 8. Clonage du dépôt GitHub dans /var/www/html/. 9. Configuration du VirtualHost Apache2 pour pointer vers le répertoire du site. 10. Activation du site et rechargement d'Apache2. 11. Accès au site depuis le navigateur.",
+    "difficultes": "La configuration du VirtualHost Apache2 et la gestion des permissions sur /var/www/html/ ont été les points les plus délicats. Il fallait s'assurer que l'utilisateur www-data avait les bons droits de lecture sur les fichiers clonés depuis GitHub.",
+    "resultat": "Site web opérationnel, accessible depuis le réseau local via l'IP de la VM. Le déploiement se fait en une seule commande git pull depuis la VM en SSH. La clé SSH permet une connexion sécurisée sans mot de passe.",
     "procedures": [
-      { "titre": "Git — commandes essentielles", "cat": "outils" }
+      { "titre": "Clé SSH Windows → VM Debian", "cat": "Système" },
+      { "titre": "Apache2 + Docker Compose + SSH GitHub", "cat": "Services" },
+      { "titre": "Installation Debian", "cat": "Système" },
+      { "titre": "Configuration réseau Debian", "cat": "Réseau" },
+      { "titre": "Git — commandes essentielles", "cat": "Outils" }
     ]
   },
   {
     "id": "p3",
-    "title": "Base de données clients",
-    "category": "entreprise",
-    "date": "2026-01-10",
-    "stack": "MySQL • SQL • Modélisation",
-    "summary": "Conception et création d'une base de données de gestion clients.",
-    "context": "Besoin d'un outil de suivi clients pour le service commercial de l'entreprise.",
-    "objectifs": "Modéliser la base, créer les tables, gérer les droits d'accès et fournir des requêtes de reporting.",
-    "etapes": "Analyse des besoins, MCD/MLD, création sous MySQL, requêtes SQL d'extraction.",
-    "difficultes": "Normalisation des données et gestion des relations entre entités.",
-    "resultat": "Base de données opérationnelle avec 5 tables, 3 niveaux de droits et un jeu de requêtes documenté.",
+    "title": "Active Directory — Infrastructure Windows Server",
+    "category": "ecole",
+    "date": "2025-11-01",
+    "stack": "Windows Server 2022 • Active Directory • DHCP • GPO • DNS • Certificats",
+    "summary": "Mise en place complète d'un Active Directory avec domaine Paugy.lan, DHCP, GPO, gestion des utilisateurs, des PC et des certificats.",
+    "context": "Projet réalisé dans le cadre du BTS SIO consistant à déployer une infrastructure Windows Server complète avec Active Directory. L'objectif était de simuler un environnement d'entreprise réel : un serveur contrôleur de domaine, un client Windows intégré au domaine, et toute la configuration réseau, sécurité et organisationnelle qui en découle. Le domaine créé s'appelle Paugy.lan.",
+    "objectifs": "Installer et configurer Windows Server comme contrôleur de domaine Active Directory. Créer le domaine Paugy.lan. Configurer le service DHCP avec une plage d'adressage IP définie. Créer l'arborescence Active Directory (OU, utilisateurs, groupes, ordinateurs). Mettre en place des GPO (stratégies de groupe) : suppression du gestionnaire des tâches, configuration réseau. Créer des certificats de signature. Intégrer un poste client Windows au domaine.",
+    "etapes": "1. Installation de Windows Server 2022 en VM. 2. Configuration de l'IP statique du serveur (ex: 192.168.1.1/24, passerelle 192.168.1.254). 3. Promotion en contrôleur de domaine Active Directory avec création du domaine Paugy.lan. 4. Installation et configuration du rôle DHCP : plage d'adressage 192.168.1.100-192.168.1.200, durée de bail 8h, exclusions, options DHCP (passerelle, DNS). 5. Création de l'arborescence AD : OU Société → sous-OU par service (Direction, Informatique, Comptabilité...) avec les utilisateurs et ordinateurs rangés par section. 6. Création des utilisateurs avec profils et mots de passe. 7. Création des GPO : suppression du gestionnaire des tâches pour les utilisateurs standards, configuration IP forcée, mappage de lecteurs réseau. 8. Création d'un dossier partagé société avec permissions par groupe. 9. Génération de certificats de signature via l'autorité de certification intégrée. 10. Intégration du poste client Windows au domaine Paugy.lan. 11. Vérification de la connexion client avec un compte du domaine.",
+    "difficultes": "La configuration du DHCP pour qu'il fonctionne correctement avec le DNS Active Directory a demandé plusieurs ajustements (autorisation du serveur DHCP dans l'AD). La gestion des GPO et leur application différenciée selon les OU a également demandé de la rigueur : bien lier les GPO aux bonnes OU sans impacter les comptes administrateurs.",
+    "resultat": "Infrastructure Active Directory complète et fonctionnelle : domaine Paugy.lan opérationnel, DHCP distribuant automatiquement les adresses IP aux postes clients, GPO appliquées correctement selon les utilisateurs, dossier partagé accessible par les bons groupes, et client Windows intégré et authentifié sur le domaine.",
     "procedures": [
-      { "titre": "Installation MySQL", "cat": "bdd" }
+      { "titre": "Configuration réseau Debian", "cat": "Réseau" }
     ]
   },
   {
     "id": "p4",
-    "title": "Déploiement Docker interne",
-    "category": "entreprise",
-    "date": "2025-12-05",
-    "stack": "Docker • Docker Compose • Linux",
-    "summary": "Conteneurisation d'un service web interne via Docker Compose.",
-    "context": "Besoin de standardiser le déploiement d'une application web utilisée en interne.",
-    "objectifs": "Conteneuriser l'application, automatiser le démarrage et documenter le déploiement.",
-    "etapes": "Installation Docker, rédaction du Dockerfile et docker-compose.yml, tests de montée en charge.",
-    "difficultes": "Gestion des volumes persistants et du réseau bridge entre conteneurs.",
-    "resultat": "Service déployé en 2 commandes, stable et reproductible sur tout serveur Linux.",
+    "title": "Mise en place d'un VPN",
+    "category": "ecole",
+    "date": "2025-12-01",
+    "stack": "OpenVPN • Debian • Windows • Certificats SSL/TLS",
+    "summary": "Déploiement d'une infrastructure VPN permettant une connexion sécurisée et chiffrée entre un client distant et un réseau local.",
+    "context": "Dans le cadre du BTS SIO, ce projet visait à comprendre et mettre en place un VPN (Virtual Private Network) permettant à un client externe de se connecter de manière sécurisée à un réseau local interne. Le VPN garantit la confidentialité des échanges grâce au chiffrement des données transitant sur Internet.",
+    "objectifs": "Installer et configurer un serveur OpenVPN sur Debian. Générer les certificats et clés SSL/TLS nécessaires à l'authentification. Configurer le client VPN sur Windows. Vérifier que le client peut accéder aux ressources du réseau local via le tunnel VPN.",
+    "etapes": "1. Installation d'OpenVPN et Easy-RSA sur le serveur Debian. 2. Initialisation de l'autorité de certification (PKI) avec Easy-RSA. 3. Génération du certificat et de la clé du serveur. 4. Génération du certificat et de la clé du client. 5. Génération de la clé Diffie-Hellman (dh.pem). 6. Configuration du fichier server.conf OpenVPN (port, protocole, réseau VPN, push routes). 7. Activation du forwarding IP sur le serveur. 8. Configuration du pare-feu (iptables) pour le NAT. 9. Démarrage du service OpenVPN. 10. Export du fichier .ovpn client. 11. Import et connexion depuis le client Windows avec OpenVPN GUI. 12. Test de connectivité vers le réseau local.",
+    "difficultes": "Aucune difficulté majeure recensée. La génération des certificats via Easy-RSA était très guidée. La configuration du NAT iptables a nécessité quelques recherches pour bien comprendre le masquerading.",
+    "resultat": "Tunnel VPN fonctionnel entre le client Windows et le serveur Debian. Les données circulent de manière chiffrée. Le client distant peut accéder aux ressources du réseau local comme s'il était physiquement présent sur le réseau.",
     "procedures": [
-      { "titre": "Docker", "cat": "web" },
-      { "titre": "Configuration réseau Debian", "cat": "reseau" }
+      { "titre": "Configuration SSH", "cat": "Système" },
+      { "titre": "Configuration réseau Debian", "cat": "Réseau" }
+    ]
+  },
+  {
+    "id": "p5",
+    "title": "Projet Cisco Meraki — Déploiement réseau Santé BTP",
+    "category": "entreprise",
+    "date": "2026-01-01",
+    "stack": "Cisco Meraki • Dashboard Cloud • Switch MS • VLAN • QoS • Supervision réseau",
+    "summary": "Participation au déploiement et à la configuration de switches Cisco Meraki dans les centres Santé BTP, permettant la supervision en temps réel du trafic réseau.",
+    "context": "Dans le cadre de mon alternance chez Axians, j'ai participé à un projet d'envergure pour l'entreprise Santé BTP, qui dispose de nombreux centres à travers la France. L'objectif était de déployer des switches Cisco Meraki dans chaque centre afin d'avoir une visibilité complète et en temps réel sur la consommation réseau de chaque appareil connecté. Axians, partenaire Cisco certifié, m'a intégré à ce projet pendant 4 jours de stage chez eux, avant que je participe sur le terrain. Sur les grands centres, j'accompagnais les techniciens Axians en observation et en assistance. Sur les centres de taille plus réduite, j'ai eu l'opportunité de prendre en charge une partie de l'installation de manière quasi autonome, sous la supervision de mon tuteur d'alternance — ce qui m'a permis d'être réellement acteur du projet.",
+    "objectifs": "Déployer des switches Cisco Meraki dans les centres Santé BTP. Configurer les switches via le Dashboard Meraki Cloud (VLAN, QoS, ports). Permettre la supervision en temps réel du trafic réseau par appareil et par centre. Former les équipes internes à la lecture du Dashboard Meraki. Documenter les configurations mises en place.",
+    "etapes": "1. Participation aux 4 jours de stage chez Axians pour comprendre l'infrastructure Meraki et être formé à la configuration via le Dashboard Cloud. 2. Prise en main du Dashboard Meraki : création du réseau, ajout des switches par numéro de série, configuration des VLAN et des ports. 3. Déplacement sur les grands centres Santé BTP avec les techniciens Axians : installation physique des switches, câblage, test de liaison, vérification de l'apparition dans le Dashboard. 4. Sur les centres de taille réduite : prise en charge de l'installation physique et de la configuration de base sous la supervision du tuteur d'alternance. 5. Vérification de la supervision en temps réel : visualisation du trafic par port, par VLAN, par appareil. 6. Documentation des configurations et remise en main du Dashboard aux responsables IT Santé BTP.",
+    "difficultes": "La principale complexité résidait dans la diversité des centres : chaque site avait une topologie réseau différente, avec des besoins en VLAN spécifiques. La coordination entre Axians, Santé BTP et moi-même nécessitait une bonne communication. Le respect des délais d'intervention par centre était également une contrainte importante.",
+    "resultat": "Ensemble des centres Santé BTP équipés de switches Cisco Meraki et supervisés en temps réel via le Dashboard Cloud. Les responsables IT de Santé BTP peuvent désormais visualiser la consommation réseau de chaque appareil, détecter les anomalies, et gérer les configurations à distance. Ce projet m'a permis d'acquérir une expérience concrète sur du matériel réseau professionnel Cisco et de développer mon autonomie sur le terrain.",
+    "procedures": [
+      { "titre": "Commandes réseau utiles", "cat": "Réseau" }
+    ]
+  },
+  {
+    "id": "p6",
+    "title": "Administration NinjaOne — Gestion de parc informatique",
+    "category": "entreprise",
+    "date": "2025-10-01",
+    "stack": "NinjaOne RMM • PowerShell • Scripts • EDR HarfangLab • Gestion de parc",
+    "summary": "Administration complète du parc informatique Santé BTP via NinjaOne : organisations, scripts automatisés, gestion des mises à jour, déploiement d'outils et télémaintenance.",
+    "context": "Dans le cadre de mon alternance au sein de Santé BTP, j'ai été chargé d'administrer l'ensemble du parc informatique de l'entreprise via l'outil RMM (Remote Monitoring and Management) NinjaOne. Ce projet couvre plusieurs missions : structurer le parc en organisations logiques, automatiser des tâches via des scripts, gérer les mises à jour de manière proactive, déployer des outils comme l'EDR HarfangLab, et assurer la maintenance à distance des postes utilisateurs.",
+    "objectifs": "Structurer le parc informatique en organisations et groupes logiques dans NinjaOne. Créer et déployer des scripts PowerShell automatisés (import de fichiers, tâches planifiées). Gérer les mises à jour Windows et logicielles avec granularité (forcer, bloquer, planifier). Déployer l'EDR HarfangLab sur l'ensemble des postes via les stratégies NinjaOne. Assurer la télémaintenance des postes (PowerShell/CMD à distance, prise de contrôle, session en arrière-plan).",
+    "etapes": "1. Organisation du parc : création des organisations dans NinjaOne (par type d'appareil, par centre, par usage), affectation de chaque machine à la bonne organisation. 2. Création de stratégies (policies) appliquées par organisation : configuration des alertes, des seuils, des déclencheurs. 3. Développement de scripts PowerShell pour l'automatisation : import de fichiers de configuration, nettoyage de profils, rapports d'inventaire. 4. Déploiement des scripts via les automatisations NinjaOne (déclenchés par planification ou par condition). 5. Gestion des mises à jour : forcer les mises à jour critiques en dehors des heures de travail, bloquer certaines mises à jour problématiques, planifier les redémarrages. 6. Déploiement de l'EDR HarfangLab via les stratégies NinjaOne sur l'ensemble du parc. 7. Déploiement des logiciels des appareils d'examens complémentaires (FIM, spiromètre, Visiolite) via les stratégies. 8. Télémaintenance : connexion PowerShell/CMD en mode administrateur ou utilisateur, prise de contrôle à distance avec accord de l'utilisateur, session en arrière-plan pour interventions transparentes.",
+    "difficultes": "La diversité du parc (postes anciens, différentes versions de Windows, logiciels métiers spécifiques) a rendu la création de stratégies universelles complexe. Certains scripts devaient être adaptés selon les configurations. La gestion des mises à jour nécessitait une attention particulière pour ne pas impacter les utilisateurs en pleine consultation.",
+    "resultat": "Parc informatique Santé BTP entièrement administré et supervisé via NinjaOne. Les automatisations réduisent considérablement les interventions manuelles. L'EDR HarfangLab est déployé sur tous les postes et analyse le parc en temps réel. Les mises à jour sont maîtrisées et planifiées. La télémaintenance permet d'intervenir rapidement sans déplacement.",
+    "procedures": [
+      { "titre": "Gestion des utilisateurs", "cat": "Système" }
+    ]
+  },
+  {
+    "id": "p7",
+    "title": "Déploiement téléphonie Teams + Parc imprimantes",
+    "category": "entreprise",
+    "date": "2025-11-15",
+    "stack": "Microsoft Teams • Switch PoE NIGA • VLAN • IP Phones • Imprimantes réseau",
+    "summary": "Installation de switches PoE NIGA temporaires dans les centres Santé BTP pour alimenter les téléphones Teams et configurer les imprimantes réseau.",
+    "context": "Santé BTP a migré sa téléphonie vers Microsoft Teams Phone. Pour alimenter les téléphones Teams (qui nécessitent une alimentation PoE — Power over Ethernet), il était nécessaire d'installer des switches PoE temporaires dans les différents centres. Parallèlement, les imprimantes réseau devaient être reconfigurées pour s'adapter à la nouvelle infrastructure.",
+    "objectifs": "Déployer des switches PoE NIGA temporaires dans chaque centre Santé BTP. Raccorder et alimenter les téléphones Teams via PoE. Configurer les paramètres IP des téléphones (VLAN voix, DHCP ou IP statique). Configurer et tester les imprimantes réseau sur le nouveau réseau.",
+    "etapes": "1. Réception et préparation du matériel (switches PoE NIGA, câbles RJ45). 2. Déplacement dans les différents centres Santé BTP. 3. Installation physique des switches PoE dans les baies ou sur les bureaux selon la configuration du centre. 4. Raccordement des téléphones Teams aux ports PoE du switch. 5. Vérification de l'alimentation PoE (LED d'état sur le téléphone). 6. Configuration des paramètres réseau des téléphones (DHCP ou IP statique selon le centre, VLAN voix si nécessaire). 7. Test des appels Teams depuis chaque téléphone. 8. Configuration des imprimantes réseau : attribution d'IP statique, configuration du port d'impression sur les postes utilisateurs. 9. Test d'impression depuis les postes.",
+    "difficultes": "Aucune difficulté majeure recensée. Les déplacements entre les différents centres nécessitaient une bonne organisation logistique. Quelques téléphones Teams ont nécessité une configuration VLAN spécifique selon la configuration réseau du centre.",
+    "resultat": "Ensemble des centres Santé BTP équipés en téléphonie Teams opérationnelle. Les téléphones sont correctement alimentés via PoE et connectés au réseau. Les imprimantes sont accessibles depuis tous les postes du centre. La migration vers la téléphonie Teams est effective.",
+    "procedures": [
+      { "titre": "Commandes réseau utiles", "cat": "Réseau" },
+      { "titre": "Configuration réseau Debian", "cat": "Réseau" }
+    ]
+  },
+  {
+    "id": "p8",
+    "title": "HarfangLab EDR — Déploiement et supervision (En cours)",
+    "category": "entreprise",
+    "date": "2026-04-01",
+    "stack": "HarfangLab EDR • NinjaOne • PowerShell • Cybersécurité • Analyse comportementale",
+    "summary": "Déploiement de l'EDR HarfangLab sur l'ensemble du parc Santé BTP pour une analyse en temps réel des menaces. Projet en cours — démarré en avril 2026.",
+    "context": "Dans le cadre de la politique de cybersécurité de Santé BTP, il a été décidé de déployer un EDR (Endpoint Detection and Response) pour surveiller en temps réel l'ensemble des postes du parc informatique. HarfangLab, éditeur français de cybersécurité, a été retenu pour sa solution EDR. Le déploiement a été initié en avril 2026 et est actuellement en cours de déploiement progressif sur l'ensemble des centres.",
+    "objectifs": "Déployer l'agent HarfangLab EDR sur tous les postes Windows du parc Santé BTP via NinjaOne. Paramétrer les politiques de détection (règles, alertes, niveaux de sensibilité). Analyser les premières alertes et affiner les règles pour éviter les faux positifs. Assurer la remontée des alertes vers l'équipe IT.",
+    "etapes": "1. Préparation du déploiement : création du package d'installation HarfangLab. 2. Déploiement via les stratégies NinjaOne sur un groupe pilote de postes. 3. Vérification de l'installation et de la connexion des agents au console HarfangLab. 4. Configuration des politiques de détection initiales. 5. Analyse des premières alertes : tri entre faux positifs et menaces réelles. 6. Affinage des règles de détection. 7. Déploiement progressif sur l'ensemble du parc. 8. Formation de l'équipe IT à la lecture et au traitement des alertes HarfangLab.",
+    "difficultes": "Projet en cours — les premières difficultés identifiées sont la gestion des faux positifs sur des logiciels métiers spécifiques à Santé BTP, et l'adaptation des règles de détection au contexte médical de l'entreprise.",
+    "resultat": "Projet en cours de déploiement depuis avril 2026. Les premiers postes sont équipés et supervisés. La console HarfangLab remonte les alertes en temps réel. Le déploiement complet sur l'ensemble du parc est prévu pour le second semestre 2026.",
+    "procedures": [
+      { "titre": "Gestion des utilisateurs", "cat": "Système" }
+    ]
+  },
+  {
+    "id": "p9",
+    "title": "Gestion appareils FIM — Examens complémentaires",
+    "category": "entreprise",
+    "date": "2025-09-01",
+    "stack": "NinjaOne • Base de données appareils • FIM • Spiromètre • Visiolite • Gestion de parc",
+    "summary": "Homogénéisation et gestion du parc d'appareils d'examens complémentaires Santé BTP (casques, spiromètres, Visiolite) avec migration vers la marque FIM.",
+    "context": "Santé BTP dispose dans chaque centre d'appareils médicaux d'examens complémentaires : casques audiométriques, spiromètres (pour les tests respiratoires) et Visiolite (pour les tests de vision). L'entreprise utilisait historiquement plusieurs marques différentes (Essilor, FIM, Teknik, et d'autres), ce qui rendait la gestion complexe. L'objectif était d'homogénéiser le parc en migrant vers la marque FIM, jugée plus stable et fiable, tout en maintenant un inventaire précis et en assurant la disponibilité permanente des logiciels associés.",
+    "objectifs": "Répertorier l'ensemble des appareils d'examens complémentaires dans une base de données centralisée. Gérer les remplacements temporaires par des appareils de prêt en cas de panne. Homogénéiser le parc vers la marque FIM. Assurer la mise à jour automatique des logiciels via NinjaOne. Gérer le retour et la réintégration des appareils réparés.",
+    "etapes": "1. Inventaire exhaustif de tous les appareils par centre : marque, modèle, numéro de série, état, logiciel associé et version. 2. Création et maintien d'une base de données répertoriant tous les appareils. 3. Mise en place d'un processus de gestion des pannes : quand un appareil est défectueux, attribution d'un appareil de prêt fonctionnel le temps de la réparation, puis réintégration de l'appareil original réparé à sa place initiale. 4. Déploiement et mise à jour des logiciels FIM via les stratégies NinjaOne (garantissant la disponibilité permanente des logiciels à jour). 5. Migration progressive des appareils anciens (Essilor, Teknik) vers des appareils FIM lors des remplacements. 6. Documentation du parc et des procédures de remplacement.",
+    "difficultes": "La diversité des marques et des logiciels associés rendait la gestion complexe. Chaque marque avait ses propres pilotes et logiciels, parfois incompatibles entre eux. La coordination avec les centres pour effectuer les remplacements sans interrompre les consultations était également un défi logistique.",
+    "resultat": "Base de données appareils complète et à jour. Processus de remplacement temporaire rodé et efficace. Migration en cours vers la marque FIM sur l'ensemble du parc. Les logiciels sont maintenus à jour automatiquement via NinjaOne, garantissant la disponibilité des appareils pour les praticiens.",
+    "procedures": [
+      { "titre": "Gestion des utilisateurs", "cat": "Système" }
     ]
   }
 ]
