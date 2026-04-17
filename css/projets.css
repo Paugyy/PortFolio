@@ -43,10 +43,12 @@
   display: grid;
   gap: 0.875rem;
   grid-template-columns: 1fr;
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 64rem;
   padding-bottom: 3rem;
 }
 
-@media (min-width: 640px) { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px) { .proj-grid { grid-template-columns: 1fr; } }
 
 /* ── Carte projet ── */
 /* MODIFIER : Apparence des cartes (border, background, border-radius) */
