@@ -46,8 +46,7 @@
   padding-bottom: 3rem;
 }
 
-@media (min-width: 560px) { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (min-width: 900px) { .proj-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 640px) { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
 
 /* ── Carte projet ── */
 /* MODIFIER : Apparence des cartes (border, background, border-radius) */
